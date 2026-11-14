@@ -1,0 +1,117 @@
+/* Newspaper Editorial Layout Styles */
+
+.newspaper-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.newspaper-rule {
+  border-top: 1px solid rgba(34, 34, 34, 0.16);
+}
+
+.newspaper-double-rule {
+  border-top: 3px solid #222222;
+  border-bottom: 1px solid #222222;
+  height: 6px;
+}
+
+.newspaper-prose h1,
+.newspaper-prose h2,
+.newspaper-prose h3,
+.newspaper-prose h4 {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  color: #222222;
+  margin-top: 1.75em;
+  margin-bottom: 0.6em;
+  line-height: 1.2;
+}
+
+.newspaper-prose h2 {
+  font-size: 1.85rem;
+}
+
+.newspaper-prose h3 {
+  font-size: 1.45rem;
+}
+
+.newspaper-prose p {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  margin-bottom: 1.35em;
+  color: #222222;
+}
+
+.newspaper-prose a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.newspaper-prose blockquote {
+  border-left: 3px solid #222222;
+  padding-left: 1.25rem;
+  margin: 1.75rem 0;
+  font-style: italic;
+  color: #444444;
+}
+
+.newspaper-prose ul,
+.newspaper-prose ol {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.75;
+  margin: 1.25rem 0;
+  padding-left: 1.75rem;
+}
+
+.newspaper-prose ul {
+  list-style-type: disc;
+}
+
+.newspaper-prose ol {
+  list-style-type: decimal;
+}
+
+.newspaper-prose pre {
+  background-color: #1e1e1e;
+  color: #f6f6f6;
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.newspaper-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+}
+
+.newspaper-prose img {
+  width: 100%;
+  height: auto;
+  margin: 1.75rem 0;
+  border: 1px solid rgba(34, 34, 34, 0.12);
+}
+
+/* Announcement Ticker Animation */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 35s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}

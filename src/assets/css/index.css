@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Chomsky';
+  src: url('../fonts/chomsky.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --text-color: #222222;
+  --background-color: #f6f6f6;
+  --border-color: rgba(34, 34, 34, 0.16);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+}
