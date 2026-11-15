@@ -22,4 +22,5 @@ export interface SiteConfig {
   editionLabel: string;
   author: AuthorProfile;
   navigation: NavItem[];
+  quickArchive: NavItem[];
 }

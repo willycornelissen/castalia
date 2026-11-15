@@ -22,4 +22,11 @@ export const siteConfig: SiteConfig = {
     { label: 'Tecnologia', path: '/tag/tecnologia' },
     { label: 'Ensaios', path: '/tag/ensaios' },
   ],
+  quickArchive: [
+    { label: 'Nova Acrópole', path: '/tag/nova-acropole' },
+    { label: 'Grupo Fermata', path: '/tag/grupo-fermata' },
+    { label: 'Clube Dom Quixote', path: '/tag/clube-dom-quixote' },
+    { label: 'Clube Athena', path: '/tag/clube-athena' },
+    { label: 'Dáblio Labs', path: '/tag/dablio-labs' },
+  ],
 };

@@ -10,6 +10,7 @@ import {
   toggleTagInInput,
 } from '@/utils/tags';
 import { useNavigation } from '@/context/NavigationContext';
+import { siteConfig } from '@/config/site.config';
 import { PostContent } from '@/components/reader/PostContent';
 import { PostSettingsSidebar } from './PostSettingsSidebar';
 import { compressAndUploadMedia } from '@/services/storage.service';
@@ -40,7 +41,10 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
   const { items: navigationItems } = useNavigation();
 
   const readingTime = calculateReadingTime(contentMarkdown);
-  const menuTagOptions = extractMenuTagOptions(navigationItems);
+  const menuTagOptions = extractMenuTagOptions([
+    ...navigationItems,
+    ...siteConfig.quickArchive,
+  ]);
   const activeTags = parseTagsInput(tagsInput);
 
   const handleToggleTag = (tag: string) => {

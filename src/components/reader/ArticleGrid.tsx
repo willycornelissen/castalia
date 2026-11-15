@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { siteConfig } from '@/config/site.config';
 import type { Post } from '@/types/post';
 import { ArticleCard } from './ArticleCard';
 
@@ -64,6 +66,23 @@ export function ArticleGrid({
           <h2 className="font-condensed text-xs uppercase tracking-widest font-bold border-b-2 border-ink pb-2 mb-4">
             Arquivo Rápido
           </h2>
+          <nav aria-label="Arquivo Rápido" className="mb-6 pb-5 border-b border-ink/15">
+            <ul className="space-y-2">
+              {siteConfig.quickArchive.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5"
+                  >
+                    <span>{item.label}</span>
+                    <span aria-hidden="true" className="text-muted text-xs">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           {rightColumnPosts.length > 0 ? (
             rightColumnPosts.map((post) => (
               <ArticleCard key={`right-${post.slug}`} post={post} variant="small" />
