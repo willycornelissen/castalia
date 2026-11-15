@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { getPostsByTag } from '@/services/posts.service';
-import { useNavigation } from '@/context/NavigationContext';
-import { slugify } from '@/utils/slugify';
-import { extractTagFromNavPath } from '@/utils/tags';
 import type { Post } from '@/types/post';
 import { Masthead } from '@/components/reader/Masthead';
 import { ArticleCard } from '@/components/reader/ArticleCard';
@@ -14,7 +11,6 @@ const PAGE_SIZE = 10;
 
 export function TagPage() {
   const { tag } = useParams<{ tag: string }>();
-  const { items: navigationItems } = useNavigation();
   const [posts, setPosts] = useState<Post[]>([]);
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(false);
@@ -61,26 +57,11 @@ export function TagPage() {
     }
   };
 
-  const normalizedTag = tag ? slugify(tag) : '';
-  const matchingMenuOption = navigationItems.find(
-    (item) => extractTagFromNavPath(item.path) === normalizedTag
-  );
-  const sectionTitle = matchingMenuOption?.label ?? tag;
-
   return (
     <div className="min-h-screen flex flex-col bg-paper text-ink">
       <Masthead />
 
       <main className="flex-1 newspaper-container py-10">
-        <header className="border-b-2 border-ink pb-4 mb-8">
-          <span className="font-condensed text-xs uppercase tracking-widest text-muted block mb-1">
-            Arquivo por Seção
-          </span>
-          <h2 className="font-serif text-4xl font-bold text-ink">
-            {sectionTitle}
-          </h2>
-        </header>
-
         {loading ? (
           <p className="font-condensed text-sm uppercase tracking-widest text-muted py-12 text-center">
             Buscando publicações...

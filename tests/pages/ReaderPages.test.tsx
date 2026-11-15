@@ -163,7 +163,8 @@ describe('Reader Pages', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /editorial/i })).toBeInTheDocument();
+      expect(screen.queryByText(/arquivo por seção/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('heading', { name: /^editorial$/i })).not.toBeInTheDocument();
       expect(screen.getByText('Manchete Principal do Dia')).toBeInTheDocument();
     });
   });
