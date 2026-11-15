@@ -73,5 +73,7 @@ describe('ArticleGrid', () => {
         item.href
       );
     }
+
+    expect(screen.queryByText(/mais edições em breve/i)).not.toBeInTheDocument();
   });
 });
