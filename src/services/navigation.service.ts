@@ -1,6 +1,7 @@
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from './firebase';
 import { siteConfig } from '@/config/site.config';
+import { slugify } from '@/utils/slugify';
 import type { NavItem } from '@/types/site';
 
 const SETTINGS_COLLECTION = 'settings';
@@ -40,7 +41,17 @@ export function normalizeNavPath(rawPath: string): string {
     );
   }
 
-  return trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  const normalizedPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  if (/^\/tag(?:\/|$)/i.test(normalizedPath)) {
+    const rawTag = normalizedPath.replace(/^\/tag\/?/i, '').replace(/\/+$/, '');
+    const tagSlug = slugify(rawTag);
+    if (!tagSlug) {
+      throw new Error('Informe uma tag válida após /tag/.');
+    }
+    return `/tag/${tagSlug}`;
+  }
+
+  return normalizedPath;
 }
 
 /**

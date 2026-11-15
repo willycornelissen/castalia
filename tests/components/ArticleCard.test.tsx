@@ -54,4 +54,21 @@ describe('ArticleCard', () => {
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
   });
+
+  it('renders all tags when a post belongs to many tags/sections', () => {
+    const multiTagPost: Post = {
+      ...mockPost,
+      tags: ['editorial', 'tecnologia', 'cronicas', 'ensaios'],
+    };
+
+    render(
+      <MemoryRouter>
+        <ArticleCard post={multiTagPost} variant="horizontal" />
+      </MemoryRouter>
+    );
+
+    for (const tag of multiTagPost.tags) {
+      expect(screen.getByRole('link', { name: tag })).toHaveAttribute('href', `/tag/${tag}`);
+    }
+  });
 });

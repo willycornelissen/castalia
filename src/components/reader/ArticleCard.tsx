@@ -27,7 +27,7 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
           </Link>
         )}
         <div className="flex flex-wrap items-center gap-2 mb-2">
-          {post.tags.slice(0, 2).map((tag) => (
+          {post.tags.map((tag) => (
             <TagBadge key={tag} tag={tag} />
           ))}
           <span className="font-condensed text-xs uppercase tracking-widest text-muted">
@@ -51,8 +51,10 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
   if (variant === 'small') {
     return (
       <article className="border-b border-ink/15 pb-4 pt-3 first:pt-0">
-        <div className="flex items-center gap-2 mb-1">
-          {post.tags[0] && <TagBadge tag={post.tags[0]} />}
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          {post.tags.map((tag) => (
+            <TagBadge key={tag} tag={tag} />
+          ))}
           <span className="font-condensed text-[11px] uppercase tracking-wider text-muted">
             {dateLabel}
           </span>
@@ -83,7 +85,7 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
       )}
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-1.5">
-          {post.tags.slice(0, 2).map((tag) => (
+          {post.tags.map((tag) => (
             <TagBadge key={tag} tag={tag} />
           ))}
           <span className="font-condensed text-xs uppercase tracking-wider text-muted">

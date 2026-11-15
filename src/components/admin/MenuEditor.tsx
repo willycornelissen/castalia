@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, Plus, RotateCcw, Save, Trash2 } from 'lucide-react';
 import { siteConfig } from '@/config/site.config';
 import { validateAndNormalizeNavItems } from '@/services/navigation.service';
+import { slugify } from '@/utils/slugify';
+import { extractTagFromNavPath } from '@/utils/tags';
 import type { NavItem } from '@/types/site';
 
 interface MenuEditorProps {
@@ -136,83 +138,112 @@ export function MenuEditor({
             Nenhuma opção configurada. Adicione ao menos um item para o menu.
           </div>
         ) : (
-          rows.map((row, index) => (
-            <div
-              key={row.id}
-              className="p-4 flex flex-col sm:flex-row sm:items-end gap-3"
-            >
-              <div className="flex-1">
-                <label
-                  htmlFor={`${row.id}-label`}
-                  className="block text-xs font-medium text-gray-600 mb-1"
-                >
-                  Rótulo
-                </label>
-                <input
-                  id={`${row.id}-label`}
-                  type="text"
-                  value={row.label}
-                  onChange={(e) =>
-                    handleFieldChange(row.id, 'label', e.target.value)
-                  }
-                  placeholder="Ex: Editorial"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-ink"
-                />
-              </div>
+          rows.map((row, index) => {
+            const linkedTag = extractTagFromNavPath(row.path);
+            const suggestedSlug = slugify(row.label);
+            const suggestedTagPath = suggestedSlug ? `/tag/${suggestedSlug}` : '';
+            return (
+              <div key={row.id} className="p-4 space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-end gap-3">
+                  <div className="flex-1">
+                    <label
+                      htmlFor={`${row.id}-label`}
+                      className="block text-xs font-medium text-gray-600 mb-1"
+                    >
+                      Rótulo
+                    </label>
+                    <input
+                      id={`${row.id}-label`}
+                      type="text"
+                      value={row.label}
+                      onChange={(e) =>
+                        handleFieldChange(row.id, 'label', e.target.value)
+                      }
+                      placeholder="Ex: Editorial"
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-ink"
+                    />
+                  </div>
 
-              <div className="flex-[1.3]">
-                <label
-                  htmlFor={`${row.id}-path`}
-                  className="block text-xs font-medium text-gray-600 mb-1"
-                >
-                  Caminho ou URL
-                </label>
-                <input
-                  id={`${row.id}-path`}
-                  type="text"
-                  value={row.path}
-                  onChange={(e) =>
-                    handleFieldChange(row.id, 'path', e.target.value)
-                  }
-                  placeholder="Ex: /tag/editorial ou https://..."
-                  className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded focus:outline-none focus:border-ink"
-                />
-              </div>
+                  <div className="flex-[1.3]">
+                    <label
+                      htmlFor={`${row.id}-path`}
+                      className="block text-xs font-medium text-gray-600 mb-1"
+                    >
+                      Caminho ou URL
+                    </label>
+                    <input
+                      id={`${row.id}-path`}
+                      type="text"
+                      value={row.path}
+                      onChange={(e) =>
+                        handleFieldChange(row.id, 'path', e.target.value)
+                      }
+                      placeholder="Ex: /tag/editorial ou https://..."
+                      className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded focus:outline-none focus:border-ink"
+                    />
+                  </div>
 
-              <div className="flex items-center gap-1 self-end">
-                <button
-                  type="button"
-                  onClick={() => handleMove(index, -1)}
-                  disabled={index === 0 || isSaving}
-                  aria-label="Mover para cima"
-                  title="Mover para cima"
-                  className="p-2 text-gray-500 hover:text-ink border border-gray-200 rounded disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <ArrowUp className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleMove(index, 1)}
-                  disabled={index === rows.length - 1 || isSaving}
-                  aria-label="Mover para baixo"
-                  title="Mover para baixo"
-                  className="p-2 text-gray-500 hover:text-ink border border-gray-200 rounded disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <ArrowDown className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleRemove(row.id)}
-                  disabled={isSaving}
-                  aria-label="Remover opção"
-                  title="Remover opção"
-                  className="p-2 text-gray-500 hover:text-red-600 border border-gray-200 rounded disabled:opacity-40"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                  <div className="flex items-center gap-1 self-end">
+                    <button
+                      type="button"
+                      onClick={() => handleMove(index, -1)}
+                      disabled={index === 0 || isSaving}
+                      aria-label="Mover para cima"
+                      title="Mover para cima"
+                      className="p-2 text-gray-500 hover:text-ink border border-gray-200 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleMove(index, 1)}
+                      disabled={index === rows.length - 1 || isSaving}
+                      aria-label="Mover para baixo"
+                      title="Mover para baixo"
+                      className="p-2 text-gray-500 hover:text-ink border border-gray-200 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <ArrowDown className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(row.id)}
+                      disabled={isSaving}
+                      aria-label="Remover opção"
+                      title="Remover opção"
+                      className="p-2 text-gray-500 hover:text-red-600 border border-gray-200 rounded disabled:opacity-40"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                  {linkedTag ? (
+                    <span className="text-emerald-700 font-medium">
+                      Mostra publicações com a tag <code className="font-mono">#{linkedTag}</code>
+                    </span>
+                  ) : (
+                    <span className="text-gray-400">
+                      {row.path.trim() === '/'
+                        ? 'Mostra todas as publicações na capa'
+                        : 'Link customizado'}
+                    </span>
+                  )}
+                  {suggestedTagPath && row.path.trim() !== suggestedTagPath && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleFieldChange(row.id, 'path', suggestedTagPath)
+                      }
+                      className="text-gray-600 hover:text-ink underline"
+                    >
+                      Vincular à tag {suggestedTagPath}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 

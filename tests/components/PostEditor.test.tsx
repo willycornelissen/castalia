@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { PostEditor } from '@/components/admin/PostEditor';
+import { NavigationProvider } from '@/context/NavigationContext';
+import * as navigationService from '@/services/navigation.service';
 import type { Post } from '@/types/post';
 
 vi.mock('@/services/storage.service', () => ({
@@ -82,5 +84,50 @@ describe('PostEditor', () => {
     const slugInput = screen.getByLabelText(/url slug/i) as HTMLInputElement;
     expect(slugInput).toBeDisabled();
     expect(screen.getByText(/slug imutável/i)).toBeInTheDocument();
+  });
+
+  it('allows selecting multiple menu tags and adding arbitrary custom tags', async () => {
+    vi.spyOn(navigationService, 'getNavigationMenu').mockResolvedValueOnce([
+      { label: 'Capa', path: '/' },
+      { label: 'Editorial', path: '/tag/editorial' },
+      { label: 'Tecnologia', path: '/tag/tecnologia' },
+      { label: 'Crônicas', path: '/tag/cronicas' },
+    ]);
+    const onSave = vi.fn().mockResolvedValue(undefined);
+
+    render(
+      <MemoryRouter>
+        <NavigationProvider>
+          <PostEditor onSave={onSave} isSaving={false} />
+        </NavigationProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Editorial' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Crônicas' })).toBeInTheDocument();
+    });
+
+    // Toggle two menu tags directly in the editor bar
+    fireEvent.click(screen.getByRole('button', { name: 'Editorial' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Crônicas' }));
+
+    // Open settings sidebar and add multiple custom tags on top of menu tags
+    fireEvent.click(screen.getByRole('button', { name: /configurações/i }));
+    const tagsInput = screen.getByLabelText(/tags/i) as HTMLInputElement;
+    fireEvent.change(tagsInput, {
+      target: { value: `${tagsInput.value}, ia, arquitetura, ficcao, memoria` },
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /^publicar$/i }));
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({
+          status: 'published',
+          tags: ['editorial', 'cronicas', 'ia', 'arquitetura', 'ficcao', 'memoria'],
+        })
+      );
+    });
   });
 });

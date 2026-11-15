@@ -112,4 +112,30 @@ describe('AdminMenuPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /restaurar padrão/i }));
     expect(screen.getByDisplayValue(siteConfig.navigation[0].label)).toBeInTheDocument();
   });
+
+  it('offers one-click shortcut to link a menu option to its tag route', async () => {
+    vi.mocked(navigationService.getNavigationMenu).mockResolvedValue([
+      { label: 'Crônicas & Contos', path: '' },
+    ]);
+
+    render(
+      <MemoryRouter initialEntries={['/admin/menu']}>
+        <NavigationProvider>
+          <AdminMenuPage />
+        </NavigationProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /vincular à tag \/tag\/cronicas-contos/i })
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /vincular à tag \/tag\/cronicas-contos/i })
+    );
+    expect(screen.getByDisplayValue('/tag/cronicas-contos')).toBeInTheDocument();
+    expect(screen.getByText(/mostra publicações com a tag/i)).toBeInTheDocument();
+  });
 });

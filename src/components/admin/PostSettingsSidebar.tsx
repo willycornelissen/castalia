@@ -1,5 +1,6 @@
 import { X, Lock } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
+import { parseTagsInput, type MenuTagOption } from '@/utils/tags';
 import type { PostStatus } from '@/types/post';
 
 interface PostSettingsSidebarProps {
@@ -10,6 +11,8 @@ interface PostSettingsSidebarProps {
   status: PostStatus;
   tagsInput: string;
   onTagsInputChange: (val: string) => void;
+  menuTagOptions?: MenuTagOption[];
+  onToggleTag?: (tag: string) => void;
   excerpt: string;
   onExcerptChange: (val: string) => void;
   featureImage: string;
@@ -24,6 +27,8 @@ export function PostSettingsSidebar({
   status,
   tagsInput,
   onTagsInputChange,
+  menuTagOptions = [],
+  onToggleTag,
   excerpt,
   onExcerptChange,
   featureImage,
@@ -32,6 +37,7 @@ export function PostSettingsSidebar({
   if (!isOpen) return null;
 
   const isPublished = status === 'published';
+  const activeTags = parseTagsInput(tagsInput);
 
   return (
     <aside className="fixed inset-y-0 right-0 w-80 sm:w-96 bg-white border-l border-gray-200 shadow-xl z-40 flex flex-col">
@@ -110,9 +116,53 @@ export function PostSettingsSidebar({
             type="text"
             value={tagsInput}
             onChange={(e) => onTagsInputChange(e.target.value)}
-            placeholder="editorial, tecnologia, ensaios"
+            placeholder="editorial, tecnologia, ensaios, ..."
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded"
           />
+          <p className="text-[11px] text-gray-500 mt-1">
+            Sem limite de tags. A publicação aparecerá em todas as opções do menu ligadas às tags escolhidas.
+          </p>
+
+          {menuTagOptions.length > 0 && onToggleTag && (
+            <div className="mt-3">
+              <span className="block text-[11px] font-medium text-gray-500 mb-1.5">
+                Opções do menu vinculadas a tags:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {menuTagOptions.map((option) => {
+                  const selected = activeTags.includes(option.tag);
+                  return (
+                    <button
+                      key={option.tag}
+                      type="button"
+                      onClick={() => onToggleTag(option.tag)}
+                      aria-pressed={selected}
+                      className={`text-xs px-2 py-0.5 rounded border transition-colors ${
+                        selected
+                          ? 'bg-ink text-white border-ink'
+                          : 'bg-gray-50 text-gray-700 border-gray-300 hover:border-ink'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {activeTags.length > 0 && (
+            <div className="mt-2.5 flex flex-wrap gap-1">
+              {activeTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[11px] font-mono bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>

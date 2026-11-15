@@ -18,6 +18,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { slugify } from '@/utils/slugify';
+import { normalizeTagList } from '@/utils/tags';
 import { calculateReadingTime } from '@/utils/readingTime';
 import type { CreatePostDTO, Post, UpdatePostDTO } from '@/types/post';
 
@@ -169,7 +170,7 @@ export async function createPost(dto: CreatePostDTO): Promise<Post> {
 
   const now = Timestamp.now();
   const isPublished = dto.status === 'published';
-  const normalizedTags = (dto.tags ?? []).map((t) => slugify(t)).filter(Boolean);
+  const normalizedTags = normalizeTagList(dto.tags ?? []);
   const readingTime = calculateReadingTime(dto.content_markdown);
 
   const payload = {
@@ -235,7 +236,7 @@ export async function updatePost(slug: string, dto: UpdatePostDTO): Promise<Post
     const nextMarkdown = dto.content_markdown ?? existing.content_markdown;
     const nextTags =
       dto.tags !== undefined
-        ? dto.tags.map((t) => slugify(t)).filter(Boolean)
+        ? normalizeTagList(dto.tags)
         : existing.tags;
     const publishedAt = shouldSetPublishedAt
       ? now
@@ -283,7 +284,7 @@ export async function updatePost(slug: string, dto: UpdatePostDTO): Promise<Post
   if (dto.feature_image !== undefined) updates.feature_image = dto.feature_image;
   if (dto.status !== undefined) updates.status = dto.status;
   if (dto.tags !== undefined) {
-    updates.tags = dto.tags.map((t) => slugify(t)).filter(Boolean);
+    updates.tags = normalizeTagList(dto.tags);
   }
   if (shouldSetPublishedAt) {
     updates.published_at = now;

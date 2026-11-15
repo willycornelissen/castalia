@@ -81,13 +81,13 @@ describe('navigation.service', () => {
 
     const saved = await saveNavigationMenu([
       { label: ' Capa ', path: ' / ' },
-      { label: 'Ensaios', path: 'tag/ensaios' },
+      { label: 'Crônicas & Contos', path: 'tag/Crônicas & Contos' },
       { label: 'Sobre', path: 'https://willy.dev.br/sobre' },
     ]);
 
     expect(saved).toEqual([
       { label: 'Capa', path: '/' },
-      { label: 'Ensaios', path: '/tag/ensaios' },
+      { label: 'Crônicas & Contos', path: '/tag/cronicas-contos' },
       { label: 'Sobre', path: 'https://willy.dev.br/sobre' },
     ]);
     expect(setDoc).toHaveBeenCalledWith(

@@ -163,7 +163,7 @@ describe('Reader Pages', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'editorial' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /editorial/i })).toBeInTheDocument();
       expect(screen.getByText('Manchete Principal do Dia')).toBeInTheDocument();
     });
   });

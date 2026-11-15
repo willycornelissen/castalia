@@ -1,9 +1,15 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Settings, Eye, ImagePlus } from 'lucide-react';
+import { ArrowLeft, Settings, Eye, ImagePlus, Tag } from 'lucide-react';
 import type { CreatePostDTO, Post, PostStatus } from '@/types/post';
 import { slugify } from '@/utils/slugify';
 import { calculateReadingTime } from '@/utils/readingTime';
+import {
+  extractMenuTagOptions,
+  parseTagsInput,
+  toggleTagInInput,
+} from '@/utils/tags';
+import { useNavigation } from '@/context/NavigationContext';
 import { PostContent } from '@/components/reader/PostContent';
 import { PostSettingsSidebar } from './PostSettingsSidebar';
 import { compressAndUploadMedia } from '@/services/storage.service';
@@ -31,8 +37,15 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
   const [error, setError] = useState<string | null>(null);
 
   const inlineInputRef = useRef<HTMLInputElement>(null);
+  const { items: navigationItems } = useNavigation();
 
   const readingTime = calculateReadingTime(contentMarkdown);
+  const menuTagOptions = extractMenuTagOptions(navigationItems);
+  const activeTags = parseTagsInput(tagsInput);
+
+  const handleToggleTag = (tag: string) => {
+    setTagsInput((prev) => toggleTagInInput(prev, tag));
+  };
 
   const handleTitleChange = (nextTitle: string) => {
     setTitle(nextTitle);
@@ -47,10 +60,7 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
   };
 
   const buildPayload = (targetStatus: PostStatus): CreatePostDTO => {
-    const parsedTags = tagsInput
-      .split(',')
-      .map((t) => slugify(t))
-      .filter(Boolean);
+    const parsedTags = parseTagsInput(tagsInput);
 
     return {
       title: title.trim() || 'Sem título',
@@ -197,8 +207,54 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="Título do artigo..."
-            className="w-full font-serif text-3xl sm:text-4xl font-bold text-ink placeholder-gray-300 focus:outline-none mb-6"
+            className="w-full font-serif text-3xl sm:text-4xl font-bold text-ink placeholder-gray-300 focus:outline-none mb-4"
           />
+
+          <div className="mb-5 pb-4 border-b border-gray-100 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 mr-1">
+              <Tag className="w-3.5 h-3.5" />
+              Tags do menu:
+            </span>
+            {menuTagOptions.map((option) => {
+              const selected = activeTags.includes(option.tag);
+              return (
+                <button
+                  key={option.tag}
+                  type="button"
+                  onClick={() => handleToggleTag(option.tag)}
+                  aria-pressed={selected}
+                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                    selected
+                      ? 'bg-ink text-white border-ink'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-ink hover:text-ink'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+            {activeTags
+              .filter((tag) => !menuTagOptions.some((opt) => opt.tag === tag))
+              .map((customTag) => (
+                <button
+                  key={customTag}
+                  type="button"
+                  onClick={() => handleToggleTag(customTag)}
+                  title="Remover tag"
+                  className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200"
+                >
+                  #{customTag} ×
+                </button>
+              ))}
+            <button
+              type="button"
+              onClick={() => setSettingsOpen(true)}
+              className="text-xs text-gray-500 hover:text-ink underline ml-1"
+            >
+              + Editar todas as tags
+            </button>
+          </div>
+
           <textarea
             value={contentMarkdown}
             onChange={(e) => setContentMarkdown(e.target.value)}
@@ -237,6 +293,8 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
         status={status}
         tagsInput={tagsInput}
         onTagsInputChange={setTagsInput}
+        menuTagOptions={menuTagOptions}
+        onToggleTag={handleToggleTag}
         excerpt={excerpt}
         onExcerptChange={setExcerpt}
         featureImage={featureImage}
