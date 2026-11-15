@@ -7,7 +7,8 @@
       // SPA redirect for GitHub Pages (preserves clean URLs across reloads)
       (function () {
         var l = window.location;
-        var pathSegmentsToKeep = l.pathname.indexOf('/castalia/') === 0 ? 1 : 0;
+        var pathSegmentsToKeep =
+          l.hostname.endsWith('.github.io') && l.pathname.indexOf('/castalia/') === 0 ? 1 : 0;
         var base = l.pathname
           .split('/')
           .slice(0, 1 + pathSegmentsToKeep)
