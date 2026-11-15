@@ -30,7 +30,7 @@ function AdminLoadingFallback() {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           {/* Public Reader Routes */}
           <Route path="/" element={<HomePage />} />

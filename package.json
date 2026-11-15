@@ -10,8 +10,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "deploy:firestore": "node scripts/deploy-rules.mjs --firestore-only",
     "deploy:rules": "node scripts/deploy-rules.mjs",
-    "deploy:hosting": "npm run build && firebase deploy --only hosting"
+    "deploy:gh-pages": "npm run build && gh-pages -d dist --dotfiles",
+    "deploy:hosting": "VITE_BASE_PATH=/ npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "browser-image-compression": "^2.0.2",
@@ -33,6 +35,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^2.1.5",
     "autoprefixer": "^10.4.20",
+    "gh-pages": "^6.3.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",

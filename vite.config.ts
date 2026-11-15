@@ -2,7 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: process.env.VITE_BASE_PATH ?? (mode === 'production' ? '/castalia/' : '/'),
   plugins: [react()],
   resolve: {
     alias: {
@@ -21,4 +22,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

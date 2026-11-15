@@ -4,11 +4,15 @@ import { execFileSync } from 'node:child_process';
 
 /**
  * Generates ephemeral Firebase rules and config with ADMIN_UID stamped from .env,
- * runs `firebase deploy --only firestore:rules,storage`, and cleans up temporary
- * files so tracked rules in Git never retain hardcoded secrets.
+ * runs `firebase deploy`, and cleans up temporary files so tracked rules in Git
+ * never retain hardcoded secrets.
+ *
+ * Pass `--firestore-only` to deploy only Firestore rules + indexes (useful on the
+ * Spark free plan without Firebase Storage enabled).
  */
 const rootDir = process.cwd();
 const envPath = path.resolve(rootDir, '.env');
+const firestoreOnly = process.argv.includes('--firestore-only');
 
 if (!fs.existsSync(envPath)) {
   console.error('Error: .env file not found. Copy .env.example to .env and set ADMIN_UID.');
@@ -36,10 +40,14 @@ const tempStorageRules = '.storage.rules.deploy';
 const tempFirebaseConfig = '.firebase.deploy.json';
 
 try {
-  for (const [srcName, destName] of [
-    ['firestore.rules', tempFirestoreRules],
-    ['storage.rules', tempStorageRules],
-  ]) {
+  const rulePairs = firestoreOnly
+    ? [['firestore.rules', tempFirestoreRules]]
+    : [
+        ['firestore.rules', tempFirestoreRules],
+        ['storage.rules', tempStorageRules],
+      ];
+
+  for (const [srcName, destName] of rulePairs) {
     const srcContent = fs.readFileSync(path.resolve(rootDir, srcName), 'utf-8');
     const rendered = srcContent.replaceAll('ADMIN_UID_ENV_PLACEHOLDER', adminUid);
     const destPath = path.resolve(rootDir, destName);
@@ -56,18 +64,26 @@ try {
       ...baseConfig.firestore,
       rules: tempFirestoreRules,
     },
-    storage: {
-      ...baseConfig.storage,
-      rules: tempStorageRules,
-    },
+    ...(firestoreOnly
+      ? {}
+      : {
+          storage: {
+            ...baseConfig.storage,
+            rules: tempStorageRules,
+          },
+        }),
   };
   const tempConfigPath = path.resolve(rootDir, tempFirebaseConfig);
   fs.writeFileSync(tempConfigPath, JSON.stringify(deployConfig, null, 2), 'utf-8');
   tempFiles.push(tempConfigPath);
 
+  const targets = firestoreOnly
+    ? 'firestore:rules,firestore:indexes'
+    : 'firestore:rules,firestore:indexes,storage';
+
   execFileSync(
     'firebase',
-    ['deploy', '--config', tempFirebaseConfig, '--only', 'firestore:rules,storage'],
+    ['deploy', '--config', tempFirebaseConfig, '--only', targets],
     { stdio: 'inherit' }
   );
 } finally {
