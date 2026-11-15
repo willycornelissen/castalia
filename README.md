@@ -11,8 +11,8 @@ Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema e
   - Carregado sob demanda via `React.lazy()` + `Suspense` e protegido por `AuthGuard` e regras de segurança Firebase baseadas no `ADMIN_UID`.
   - Editor Markdown com preview ao vivo, seleção de tags, upload/compressão WebP client-side ou URL externa de imagens, e trava de slug após publicação.
 - **GitHub Pages + URLs Limpas**:
-  - `vite.config.ts` usa `base: '/castalia/'` em builds de produção (configurável via `VITE_BASE_PATH=/` para domínios customizados na raiz ou Firebase Hosting).
-  - `BrowserRouter` usa `basename={import.meta.env.BASE_URL}` combinado com `public/404.html` + restauração de rota em `index.html` e `public/.nojekyll` para suportar URLs limpas no GitHub Pages.
+  - `vite.config.ts` usa `base: '/'` por padrão (para o domínio customizado `castalia.willy.dev.br` ou Firebase Hosting; configurável via `VITE_BASE_PATH=/castalia/` para subcaminho padrão do `github.io`).
+  - `BrowserRouter` usa `basename={import.meta.env.BASE_URL}` combinado com `public/404.html` + restauração de rota em `index.html`, `public/.nojekyll` e `public/CNAME` para suportar URLs limpas no GitHub Pages.
 
 ## Configuração Inicial
 
@@ -51,7 +51,7 @@ Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema e
   npm run test:coverage
   ```
 
-- Build de produção (gera `dist/` configurado para `/castalia/`):
+- Build de produção (gera `dist/` configurado para `/` no domínio `castalia.willy.dev.br`):
   ```bash
   npm run build
   ```
@@ -77,7 +77,7 @@ Certifique-se de ter feito `firebase login` e `firebase use --add`:
    npm run deploy:gh-pages
    ```
 2. No GitHub (**Settings → Pages**), selecione **Deploy from a branch** → branch **`gh-pages`** → pasta **`/ (root)`**.
-3. Acesse `https://willycornelissen.github.io/castalia/`.
+3. Acesse `https://castalia.willy.dev.br/`.
 
 ### Opção 2: Publicação automática via GitHub Actions
 1. No GitHub (**Settings → Secrets and variables → Actions**), cadastre os secrets:
@@ -91,4 +91,4 @@ Certifique-se de ter feito `firebase login` e `firebase use --add`:
 2. Em **Settings → Pages**, selecione **Source: GitHub Actions**.
 3. Cada `git push` na branch `main` fará build e deploy automaticamente por meio de `.github/workflows/deploy-gh-pages.yml`.
 
-> **Importante (Firebase Auth):** no Firebase Console, em **Authentication → Settings → Authorized domains**, adicione `willycornelissen.github.io` para permitir login no `/admin/login` quando hospedado no GitHub Pages.
+> **Importante (Firebase Auth):** no Firebase Console, em **Authentication → Settings → Authorized domains**, adicione `castalia.willy.dev.br` (e `willycornelissen.github.io`, se aplicável) para permitir login no `/admin/login` quando hospedado no GitHub Pages.
