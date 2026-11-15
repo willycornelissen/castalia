@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FileText, PlusCircle, ExternalLink, LogOut } from 'lucide-react';
+import { FileText, PlusCircle, ListOrdered, ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { siteConfig } from '@/config/site.config';
 
@@ -51,6 +51,17 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             >
               <PlusCircle className="w-4 h-4" />
               Novo Artigo
+            </Link>
+            <Link
+              to="/admin/menu"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors ${
+                location.pathname === '/admin/menu'
+                  ? 'bg-white/10 text-white'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              <ListOrdered className="w-4 h-4" />
+              Menu
             </Link>
             <a
               href="/"

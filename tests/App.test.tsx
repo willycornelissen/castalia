@@ -41,6 +41,18 @@ vi.mock('@/services/storage.service', () => ({
   extractMediaUrlsFromMarkdown: vi.fn().mockReturnValue([]),
 }));
 
+vi.mock('@/services/navigation.service', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/services/navigation.service')>();
+  return {
+    ...actual,
+    getNavigationMenu: vi.fn().mockResolvedValue([
+      { label: 'Capa', path: '/' },
+      { label: 'Editorial', path: '/tag/editorial' },
+    ]),
+    saveNavigationMenu: vi.fn(),
+  };
+});
+
 describe('App routing shell', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -77,6 +89,15 @@ describe('App routing shell', () => {
 
   it('redirects unauthenticated users on /admin to /admin/login', async () => {
     window.history.pushState({}, '', '/admin');
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument();
+    });
+  });
+
+  it('redirects unauthenticated users on /admin/menu to /admin/login', async () => {
+    window.history.pushState({}, '', '/admin/menu');
     render(<App />);
 
     await waitFor(() => {

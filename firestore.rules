@@ -33,5 +33,14 @@ service cloud.firestore {
 
       allow delete: if isAdmin();
     }
+
+    match /settings/navigation {
+      allow get: if true;
+      allow create, update: if isAdmin()
+                            && request.resource.data.items is list
+                            && request.resource.data.items.size() > 0
+                            && request.resource.data.items.size() <= 20;
+      allow delete: if isAdmin();
+    }
   }
 }

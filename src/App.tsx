@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
+import { NavigationProvider } from '@/context/NavigationContext';
 import { AuthGuard } from '@/components/admin/AuthGuard';
 import { HomePage } from '@/pages/HomePage';
 import { PostPage } from '@/pages/PostPage';
@@ -16,6 +17,9 @@ const AdminDashboardPage = lazy(() =>
 const AdminEditorPage = lazy(() =>
   import('@/pages/AdminEditorPage').then((m) => ({ default: m.AdminEditorPage }))
 );
+const AdminMenuPage = lazy(() =>
+  import('@/pages/AdminMenuPage').then((m) => ({ default: m.AdminMenuPage }))
+);
 
 function AdminLoadingFallback() {
   return (
@@ -30,7 +34,8 @@ function AdminLoadingFallback() {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <NavigationProvider>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           {/* Public Reader Routes */}
           <Route path="/" element={<HomePage />} />
@@ -76,11 +81,22 @@ export default function App() {
               </Suspense>
             }
           />
+          <Route
+            path="/admin/menu"
+            element={
+              <Suspense fallback={<AdminLoadingFallback />}>
+                <AuthGuard>
+                  <AdminMenuPage />
+                </AuthGuard>
+              </Suspense>
+            }
+          />
 
           {/* 404 Fallback */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>
+        </BrowserRouter>
+      </NavigationProvider>
     </AuthProvider>
   );
 }

@@ -1,11 +1,13 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Masthead } from '@/components/reader/Masthead';
 import { AnnouncementBar } from '@/components/reader/AnnouncementBar';
 import { Footer } from '@/components/reader/Footer';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { PostContent } from '@/components/reader/PostContent';
+import { NavigationProvider } from '@/context/NavigationContext';
+import * as navigationService from '@/services/navigation.service';
 import type { Post } from '@/types/post';
 
 const samplePost: Post = {
@@ -34,6 +36,28 @@ describe('Reader Chrome & Pages', () => {
     expect(screen.getByText(/notícias da capital do imaginário/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Capa' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Tecnologia' })).toBeInTheDocument();
+  });
+
+  it('renders custom navigation items including external links from NavigationProvider', async () => {
+    vi.spyOn(navigationService, 'getNavigationMenu').mockResolvedValueOnce([
+      { label: 'Primeira Página', path: '/' },
+      { label: 'Arquivo', path: 'https://arquivo.willy.dev.br' },
+    ]);
+
+    render(
+      <MemoryRouter>
+        <NavigationProvider>
+          <Masthead />
+        </NavigationProvider>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: 'Primeira Página' })).toHaveAttribute('href', '/');
+      const externalLink = screen.getByRole('link', { name: 'Arquivo' });
+      expect(externalLink).toHaveAttribute('href', 'https://arquivo.willy.dev.br');
+      expect(externalLink).toHaveAttribute('target', '_blank');
+    });
   });
 
   it('renders AnnouncementBar ticker with headlines and returns null when empty', () => {

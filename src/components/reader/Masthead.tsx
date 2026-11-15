@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { siteConfig } from '@/config/site.config';
+import { useNavigation } from '@/context/NavigationContext';
+import { isExternalNavUrl } from '@/services/navigation.service';
 import { formatMastheadDate } from '@/utils/formatDate';
 
 export function Masthead() {
   const today = formatMastheadDate(new Date());
+  const { items: navigationItems } = useNavigation();
 
   return (
     <header className="bg-paper pt-4 pb-2">
@@ -28,15 +31,27 @@ export function Masthead() {
           aria-label="Navegação principal"
           className="py-3 border-b-2 border-ink flex flex-wrap justify-center gap-6 sm:gap-10"
         >
-          {siteConfig.navigation.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="font-condensed text-sm uppercase tracking-widest font-bold text-ink hover:opacity-65 transition-opacity"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navigationItems.map((item, index) =>
+            isExternalNavUrl(item.path) ? (
+              <a
+                key={`${index}-${item.path}`}
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-condensed text-sm uppercase tracking-widest font-bold text-ink hover:opacity-65 transition-opacity"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={`${index}-${item.path}`}
+                to={item.path}
+                className="font-condensed text-sm uppercase tracking-widest font-bold text-ink hover:opacity-65 transition-opacity"
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
       </div>
     </header>
