@@ -7,27 +7,12 @@ export function Footer() {
   return (
     <footer className="mt-16 border-t-2 border-ink bg-paper py-10">
       <div className="newspaper-container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-ink/15">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8 border-b border-ink/15">
           <div>
             <Link to="/" className="font-masthead text-3xl text-ink block mb-2">
               {siteConfig.title}
             </Link>
             <p className="text-sm text-muted leading-relaxed">{siteConfig.description}</p>
-          </div>
-
-          <div>
-            <h4 className="font-condensed text-xs uppercase tracking-widest font-bold text-ink mb-3">
-              Seções
-            </h4>
-            <ul className="space-y-1.5 text-sm">
-              {siteConfig.navigation.map((item) => (
-                <li key={item.path}>
-                  <Link to={item.path} className="text-muted hover:text-ink hover:underline">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div>

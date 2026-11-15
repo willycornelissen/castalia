@@ -89,6 +89,7 @@ describe('Reader Chrome & Pages', () => {
         /castália é uma província pedagógica e utópica imaginada por hermann hesse/i
       )
     ).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /seções/i })).not.toBeInTheDocument();
     expect(screen.getByText(/willy garabini cornelissen/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /redação \/ admin/i })).toHaveAttribute(
       'href',
