@@ -30,7 +30,8 @@ describe('Reader Chrome & Pages', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { name: /castalia chronicle/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /diário de castália/i })).toBeInTheDocument();
+    expect(screen.getByText(/notícias da capital do imaginário/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Capa' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Tecnologia' })).toBeInTheDocument();
   });

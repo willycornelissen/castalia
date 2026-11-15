@@ -1,8 +1,8 @@
 import type { SiteConfig } from '@/types/site';
 
 export const siteConfig: SiteConfig = {
-  title: 'Castalia Chronicle',
-  subtitle: 'Crônicas, Engenharia de Software & Ensaios Independentes',
+  title: 'Diário de Castália',
+  subtitle: 'Notícias da capital do imaginário',
   description: 'Publicação independente sobre tecnologia, design de sistemas e crônicas cotidianas.',
   editionLabel: 'Edição Digital • Acesso Público',
   author: {
