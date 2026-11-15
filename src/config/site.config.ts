@@ -3,7 +3,8 @@ import type { SiteConfig } from '@/types/site';
 export const siteConfig: SiteConfig = {
   title: 'Diário de Castália',
   subtitle: 'Notícias da capital do imaginário',
-  description: 'Publicação independente sobre tecnologia, design de sistemas e crônicas cotidianas.',
+  description:
+    'Castália é uma província pedagógica e utópica imaginada por Hermann Hesse em O Jogo das Contas de Vidro, concebida no futuro do século XXIII como um refúgio austero para a elite intelectual.',
   editionLabel: 'Edição Digital • Acesso Público',
   author: {
     name: 'Willy Garabini Cornelissen',
