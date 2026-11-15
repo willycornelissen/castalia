@@ -63,11 +63,8 @@ export function ArticleGrid({
 
         {/* Right Column: Compact digest */}
         <div className="lg:col-span-3 lg:border-l lg:border-ink/15 lg:pl-6 order-3">
-          <h2 className="font-condensed text-xs uppercase tracking-widest font-bold border-b-2 border-ink pb-2 mb-4">
-            Arquivo Rápido
-          </h2>
           <nav
-            aria-label="Arquivo Rápido"
+            aria-label="Seções em destaque"
             className={
               rightColumnPosts.length > 0 ? 'mb-6 pb-5 border-b border-ink/15' : ''
             }

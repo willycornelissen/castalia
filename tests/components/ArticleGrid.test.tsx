@@ -74,6 +74,7 @@ describe('ArticleGrid', () => {
       );
     }
 
+    expect(screen.queryByText(/arquivo rápido/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/mais edições em breve/i)).not.toBeInTheDocument();
   });
 });
