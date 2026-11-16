@@ -4,7 +4,6 @@ import {
   normalizeTagList,
   toggleTagInInput,
   extractMenuTagOptions,
-  extractStaticTagSections,
   extractTagFromNavPath,
 } from '@/utils/tags';
 
@@ -59,21 +58,6 @@ describe('tags utilities', () => {
     ).toEqual([
       { label: 'Editorial', tag: 'editorial' },
       { label: 'Crônicas & Contos', tag: 'cronicas-e-contos' },
-    ]);
-  });
-
-  it('extracts static tag sections from root paths without /tag/ while ignoring external URLs and root', () => {
-    expect(
-      extractStaticTagSections([
-        { label: 'Capa', path: '/' },
-        { label: 'Nova Acrópole', path: 'http://www.acropolis.org' },
-        { label: 'Grupo Fermata', path: '/grupo-fermata' },
-        { label: 'Clube Athena', path: '/clube-athena' },
-        { label: 'Sobre', path: '/post/sobre' },
-      ])
-    ).toEqual([
-      { label: 'Grupo Fermata', path: '/grupo-fermata', tag: 'grupo-fermata' },
-      { label: 'Clube Athena', path: '/clube-athena', tag: 'clube-athena' },
     ]);
   });
 });

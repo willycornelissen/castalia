@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { NavigationProvider } from '@/context/NavigationContext';
 import { AuthGuard } from '@/components/admin/AuthGuard';
-import { siteConfig } from '@/config/site.config';
-import { extractStaticTagSections } from '@/utils/tags';
 import { HomePage } from '@/pages/HomePage';
 import { PostPage } from '@/pages/PostPage';
 import { TagPage } from '@/pages/TagPage';
@@ -33,8 +31,6 @@ function AdminLoadingFallback() {
   );
 }
 
-const quickArchiveRoutes = extractStaticTagSections(siteConfig.quickArchive);
-
 export default function App() {
   return (
     <AuthProvider>
@@ -45,13 +41,6 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/post/:slug" element={<PostPage />} />
           <Route path="/tag/:tag" element={<TagPage />} />
-          {quickArchiveRoutes.map((section) => (
-            <Route
-              key={section.path}
-              path={section.path}
-              element={<TagPage tag={section.tag} />}
-            />
-          ))}
 
           {/* Lazy-Loaded Admin Routes */}
           <Route

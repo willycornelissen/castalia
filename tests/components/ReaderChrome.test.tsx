@@ -93,7 +93,7 @@ describe('Reader Chrome & Pages', () => {
     expect(screen.getByText(/magister ludi/i)).toBeInTheDocument();
     expect(
       screen.getByText(
-        /a verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual/i
+        /a verdadeira maestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual/i
       )
     ).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /github/i })).not.toBeInTheDocument();

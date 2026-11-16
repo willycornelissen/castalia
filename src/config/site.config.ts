@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
   editionLabel: 'Edição Digital • Acesso Público',
   author: {
     name: 'Magister Ludi',
-    bio: 'A verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual',
+    bio: 'A verdadeira maestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual',
     avatar: '',
     location: 'Brasil',
     social: {},

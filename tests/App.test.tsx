@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import App from '@/App';
-import * as postsService from '@/services/posts.service';
 
 vi.mock('@/services/firebase', () => ({
   app: {},
@@ -70,12 +69,12 @@ describe('App routing shell', () => {
     });
   });
 
-  it('renders TagPage on root quick-archive tag routes without /tag/ prefix', async () => {
+  it('renders NotFoundPage for quick-archive static page links that do not exist yet', async () => {
     window.history.pushState({}, '', '/grupo-fermata');
     render(<App />);
 
     await waitFor(() => {
-      expect(postsService.getPostsByTag).toHaveBeenCalledWith('grupo-fermata', 10);
+      expect(screen.getByText(/404/i)).toBeInTheDocument();
     });
   });
 
