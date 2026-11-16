@@ -64,6 +64,17 @@ export function PostPage() {
     return <NotFoundPage />;
   }
 
+  const isResenha = post?.template === 'resenha';
+  const coverFigure = post?.feature_image ? (
+    <figure className="mb-8">
+      <MediaImage
+        src={post.feature_image}
+        alt={post.title}
+        className="w-full h-auto max-h-[520px] object-cover border border-ink/15"
+      />
+    </figure>
+  ) : null;
+
   return (
     <div className="min-h-screen flex flex-col bg-paper text-ink">
       <Masthead />
@@ -93,6 +104,8 @@ export function PostPage() {
               </Link>
             </div>
 
+            {isResenha && coverFigure}
+
             <header className="border-b border-ink/15 pb-6 mb-8">
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 {post.tags.map((tag) => (
@@ -118,15 +131,7 @@ export function PostPage() {
               </div>
             </header>
 
-            {post.feature_image && (
-              <figure className="mb-8">
-                <MediaImage
-                  src={post.feature_image}
-                  alt={post.title}
-                  className="w-full h-auto max-h-[520px] object-cover border border-ink/15"
-                />
-              </figure>
-            )}
+            {!isResenha && coverFigure}
 
             <PostContent markdown={post.content_markdown} />
 

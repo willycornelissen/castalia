@@ -141,7 +141,34 @@ describe('posts.service', () => {
     expect(setDoc).toHaveBeenCalledTimes(1);
     expect(created.slug).toBe('meu-novo-artigo');
     expect(created.status).toBe('draft');
+    expect(created.template).toBe('article');
     expect(created.published_at).toBeNull();
+  });
+
+  it('creates and reads posts with template resenha', async () => {
+    vi.mocked(getDoc).mockResolvedValue({ exists: () => false } as never);
+    vi.mocked(setDoc).mockResolvedValue(undefined);
+
+    const created = await createPost({
+      title: 'Resenha de O Jogo das Contas de Vidro',
+      slug: '',
+      content_markdown: '## Informações Bibliográficas',
+      status: 'draft',
+      template: 'resenha',
+      tags: ['resenha'],
+    });
+
+    expect(setDoc).toHaveBeenCalledWith(
+      'doc-ref-resenha-de-o-jogo-das-contas-de-vidro',
+      expect.objectContaining({ template: 'resenha' })
+    );
+    expect(created.template).toBe('resenha');
+
+    vi.mocked(getDoc).mockResolvedValue(
+      makeDocSnap('resenha-salva', { template: 'resenha' }) as never
+    );
+    const loaded = await getPostBySlug('resenha-salva');
+    expect(loaded?.template).toBe('resenha');
   });
 
   it('rejects post creation if slug already exists', async () => {

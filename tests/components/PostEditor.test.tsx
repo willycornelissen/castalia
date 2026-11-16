@@ -157,4 +157,57 @@ describe('PostEditor', () => {
       );
     });
   });
+
+  it('pre-populates resenha sections, default tag, and renders cover photo before title in preview', async () => {
+    const onSave = vi.fn().mockResolvedValue(undefined);
+
+    const { container } = render(
+      <MemoryRouter>
+        <PostEditor defaultTemplate="resenha" onSave={onSave} isSaving={false} />
+      </MemoryRouter>
+    );
+
+    // Pre-filled sections in Markdown and live preview
+    const textarea = screen.getByPlaceholderText(/comece a escrever/i) as HTMLTextAreaElement;
+    expect(textarea.value).toContain('## Informações Bibliográficas');
+    expect(textarea.value).toContain('## Leitura Analítica');
+    expect(textarea.value).toContain('## Excertos');
+    expect(
+      screen.getByRole('heading', { name: 'Informações Bibliográficas' })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Leitura Analítica' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Excertos' })).toBeInTheDocument();
+
+    // Default tag "resenha" pre-selected
+    expect(screen.getByRole('button', { name: /#resenha ×/i })).toBeInTheDocument();
+
+    // Upload cover photo from the top resenha block
+    fireEvent.click(screen.getByRole('button', { name: /mock upload/i }));
+
+    // Fill title
+    fireEvent.change(screen.getByPlaceholderText(/título da resenha/i), {
+      target: { value: 'O Lobo da Estepe' },
+    });
+
+    // In preview, the cover image must appear BEFORE the review title heading
+    const previewHeading = screen.getByRole('heading', { name: 'O Lobo da Estepe' });
+    const previewImg = screen.getByRole('img', { name: 'O Lobo da Estepe' });
+    expect(
+      previewImg.compareDocumentPosition(previewHeading) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: /salvar rascunho/i }));
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'O Lobo da Estepe',
+          template: 'resenha',
+          feature_image: 'https://cdn.test/uploaded.webp',
+          tags: ['resenha'],
+        })
+      );
+    });
+    expect(container).toBeTruthy();
+  });
 });

@@ -19,7 +19,8 @@ service cloud.firestore {
                     && request.resource.data.status in ['draft', 'published']
                     && request.resource.data.content_markdown is string
                     && request.resource.data.excerpt is string
-                    && request.resource.data.tags is list;
+                    && request.resource.data.tags is list
+                    && (!('template' in request.resource.data) || request.resource.data.template in ['article', 'resenha']);
 
       allow update: if isAdmin()
                     && request.resource.data.slug == slug
@@ -29,6 +30,7 @@ service cloud.firestore {
                     && request.resource.data.content_markdown is string
                     && request.resource.data.excerpt is string
                     && request.resource.data.tags is list
+                    && (!('template' in request.resource.data) || request.resource.data.template in ['article', 'resenha'])
                     && (resource.data.status != 'published' || request.resource.data.slug == resource.data.slug);
 
       allow delete: if isAdmin();

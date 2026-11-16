@@ -187,4 +187,32 @@ describe('Admin Dashboard & Editor Pages', () => {
       );
     });
   });
+
+  it('AdminLayout renders Nova Resenha link and AdminEditorPage opens resenha template', async () => {
+    vi.mocked(postsService.getAllPostsAdmin).mockResolvedValue([]);
+
+    render(
+      <MemoryRouter initialEntries={['/admin']}>
+        <Routes>
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/editor" element={<AdminEditorPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const novaResenhaLink = await screen.findByRole('link', { name: /nova resenha/i });
+    expect(novaResenhaLink).toHaveAttribute('href', '/admin/editor?template=resenha');
+
+    fireEvent.click(novaResenhaLink);
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/título da resenha/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/selecionar foto da resenha/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: 'Informações Bibliográficas' })
+      ).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Leitura Analítica' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Excertos' })).toBeInTheDocument();
+    });
+  });
 });

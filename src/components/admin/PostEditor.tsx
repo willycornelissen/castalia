@@ -1,9 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Settings, Eye, ImagePlus, Tag } from 'lucide-react';
-import type { CreatePostDTO, Post, PostStatus } from '@/types/post';
+import type { CreatePostDTO, Post, PostStatus, PostTemplate } from '@/types/post';
 import { slugify } from '@/utils/slugify';
 import { calculateReadingTime } from '@/utils/readingTime';
+import {
+  RESENHA_DEFAULT_TAGS,
+  RESENHA_MARKDOWN_TEMPLATE,
+} from '@/utils/postTemplates';
 import {
   extractMenuTagOptions,
   parseTagsInput,
@@ -12,25 +16,37 @@ import {
 import { useNavigation } from '@/context/NavigationContext';
 import { MediaImage } from '@/components/common/MediaImage';
 import { PostContent } from '@/components/reader/PostContent';
+import { ImageUploader } from './ImageUploader';
 import { PostSettingsSidebar } from './PostSettingsSidebar';
 import { compressAndUploadMedia } from '@/services/storage.service';
 
 interface PostEditorProps {
   initialPost?: Post | null;
+  defaultTemplate?: PostTemplate;
   onSave: (payload: CreatePostDTO) => Promise<void>;
   isSaving: boolean;
 }
 
-export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
+export function PostEditor({
+  initialPost,
+  defaultTemplate = 'article',
+  onSave,
+  isSaving,
+}: PostEditorProps) {
+  const template: PostTemplate = initialPost?.template ?? defaultTemplate;
+  const isResenha = template === 'resenha';
+
   const [title, setTitle] = useState(initialPost?.title ?? '');
   const [slug, setSlug] = useState(initialPost?.slug ?? '');
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(Boolean(initialPost));
   const [contentMarkdown, setContentMarkdown] = useState(
-    initialPost?.content_markdown ?? ''
+    initialPost?.content_markdown ?? (isResenha ? RESENHA_MARKDOWN_TEMPLATE : '')
   );
   const [excerpt, setExcerpt] = useState(initialPost?.excerpt ?? '');
   const [featureImage, setFeatureImage] = useState(initialPost?.feature_image ?? '');
-  const [tagsInput, setTagsInput] = useState(initialPost?.tags.join(', ') ?? '');
+  const [tagsInput, setTagsInput] = useState(
+    initialPost?.tags.join(', ') ?? (isResenha ? RESENHA_DEFAULT_TAGS.join(', ') : '')
+  );
   const [status, setStatus] = useState<PostStatus>(initialPost?.status ?? 'draft');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
@@ -72,6 +88,7 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
       excerpt: excerpt.trim(),
       feature_image: featureImage,
       status: targetStatus,
+      template,
       tags: parsedTags,
     };
   };
@@ -150,6 +167,11 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
           <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600 uppercase font-medium">
             {status === 'published' ? 'Publicado' : 'Rascunho'}
           </span>
+          {isResenha && (
+            <span className="text-xs px-2 py-0.5 rounded bg-ink text-white uppercase font-medium">
+              Resenha
+            </span>
+          )}
           <span className="text-xs text-gray-400 hidden sm:inline">
             ~{readingTime} min de leitura
           </span>
@@ -224,11 +246,41 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-gray-200">
         <div className="p-6 sm:p-10 flex flex-col">
+          {isResenha && (
+            <div className="mb-6">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
+                Foto da Resenha (início)
+              </span>
+              {featureImage ? (
+                <div className="space-y-2">
+                  <MediaImage
+                    src={featureImage}
+                    alt="Prévia da foto da resenha"
+                    className="w-full h-48 object-cover rounded border border-gray-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setFeatureImage('')}
+                    className="text-xs text-red-600 hover:underline"
+                  >
+                    Remover foto da resenha
+                  </button>
+                </div>
+              ) : (
+                <ImageUploader
+                  onUploaded={setFeatureImage}
+                  variant="hero"
+                  label="Selecionar foto da resenha"
+                />
+              )}
+            </div>
+          )}
+
           <input
             type="text"
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
-            placeholder="Título do artigo..."
+            placeholder={isResenha ? 'Título da resenha...' : 'Título do artigo...'}
             className="w-full font-serif text-3xl sm:text-4xl font-bold text-ink placeholder-gray-300 focus:outline-none mb-4"
           />
 
@@ -292,10 +344,17 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
               <p className="font-condensed text-[11px] uppercase tracking-widest text-muted mb-4">
                 Pré-visualização Newspaper
               </p>
+              {isResenha && featureImage && (
+                <MediaImage
+                  src={featureImage}
+                  alt={title || 'Foto da resenha'}
+                  className="w-full h-64 object-cover mb-6 border border-ink/15"
+                />
+              )}
               <h1 className="font-serif text-4xl font-bold text-ink mb-6">
                 {title || 'Sem título'}
               </h1>
-              {featureImage && (
+              {!isResenha && featureImage && (
                 <MediaImage
                   src={featureImage}
                   alt={title}

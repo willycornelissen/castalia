@@ -168,4 +168,45 @@ describe('Reader Pages', () => {
       expect(screen.getByText('Manchete Principal do Dia')).toBeInTheDocument();
     });
   });
+
+  it('PostPage renders cover photo before title for resenha posts and after title for standard articles', async () => {
+    vi.mocked(postsService.getPostBySlug).mockResolvedValueOnce({
+      ...publishedPost,
+      slug: 'resenha-livro',
+      title: 'Resenha de Dom Quixote',
+      template: 'resenha',
+      tags: ['resenha'],
+      content_markdown: '## Informações Bibliográficas\n\nCervantes\n\n## Leitura Analítica\n\nAnálise\n\n## Excertos\n\n> Trecho',
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/post/resenha-livro']}>
+        <Routes>
+          <Route path="/post/:slug" element={<PostPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const resenhaImg = await screen.findByRole('img', { name: 'Resenha de Dom Quixote' });
+    const resenhaHeading = screen.getByRole('heading', { name: 'Resenha de Dom Quixote' });
+    expect(
+      resenhaImg.compareDocumentPosition(resenhaHeading) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+
+    vi.mocked(postsService.getPostBySlug).mockResolvedValueOnce(publishedPost);
+
+    render(
+      <MemoryRouter initialEntries={['/post/artigo-capa']}>
+        <Routes>
+          <Route path="/post/:slug" element={<PostPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const articleHeading = await screen.findByRole('heading', { name: 'Manchete Principal do Dia' });
+    const articleImg = screen.getByRole('img', { name: 'Manchete Principal do Dia' });
+    expect(
+      articleHeading.compareDocumentPosition(articleImg) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
 });

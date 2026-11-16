@@ -70,12 +70,19 @@ export function PostList({ posts, onDelete }: PostListProps) {
               {filteredPosts.map((post) => (
                 <tr key={post.slug} className="hover:bg-gray-50/70">
                   <td className="py-3.5 px-4">
-                    <Link
-                      to={`/admin/editor/${post.slug}`}
-                      className="font-medium text-gray-900 hover:underline block"
-                    >
-                      {post.title}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/admin/editor/${post.slug}`}
+                        className="font-medium text-gray-900 hover:underline"
+                      >
+                        {post.title}
+                      </Link>
+                      {post.template === 'resenha' && (
+                        <span className="inline-block text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 text-gray-700 font-semibold">
+                          Resenha
+                        </span>
+                      )}
+                    </div>
                     <span className="text-xs text-gray-400">/post/{post.slug}</span>
                   </td>
                   <td className="py-3.5 px-4">

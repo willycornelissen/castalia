@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { createPost, getPostBySlug, updatePost } from '@/services/posts.service';
 import type { CreatePostDTO, Post } from '@/types/post';
+import { parsePostTemplate } from '@/utils/postTemplates';
 import { PostEditor } from '@/components/admin/PostEditor';
 
 export function AdminEditorPage() {
   const { slug } = useParams<{ slug?: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const requestedTemplate = parsePostTemplate(searchParams.get('template'));
 
   const [initialPost, setInitialPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(Boolean(slug));
@@ -14,6 +18,7 @@ export function AdminEditorPage() {
 
   useEffect(() => {
     if (!slug) {
+      setInitialPost(null);
       setLoading(false);
       return;
     }
@@ -63,8 +68,9 @@ export function AdminEditorPage() {
 
   return (
     <PostEditor
-      key={initialPost?.slug ?? 'new'}
+      key={initialPost?.slug ?? `new-${requestedTemplate}`}
       initialPost={initialPost}
+      defaultTemplate={requestedTemplate}
       onSave={handleSave}
       isSaving={saving}
     />

@@ -20,6 +20,7 @@ import { db } from './firebase';
 import { slugify } from '@/utils/slugify';
 import { normalizeTagList } from '@/utils/tags';
 import { calculateReadingTime } from '@/utils/readingTime';
+import { parsePostTemplate } from '@/utils/postTemplates';
 import type { CreatePostDTO, Post, UpdatePostDTO } from '@/types/post';
 
 const POSTS_COLLECTION = 'posts';
@@ -50,6 +51,7 @@ function mapDocToPost(docSnap: QueryDocumentSnapshot<DocumentData>): Post {
     excerpt: data.excerpt ?? '',
     feature_image: data.feature_image ?? '',
     status: data.status ?? 'draft',
+    template: parsePostTemplate(data.template),
     tags: Array.isArray(data.tags) ? data.tags : [],
     reading_time: typeof data.reading_time === 'number' ? data.reading_time : 1,
     published_at: data.published_at ? toDate(data.published_at) : null,
@@ -180,6 +182,7 @@ export async function createPost(dto: CreatePostDTO): Promise<Post> {
     excerpt: (dto.excerpt ?? '').trim(),
     feature_image: dto.feature_image ?? '',
     status: dto.status,
+    template: parsePostTemplate(dto.template),
     tags: normalizedTags,
     reading_time: readingTime,
     published_at: isPublished ? now : null,
@@ -251,6 +254,7 @@ export async function updatePost(slug: string, dto: UpdatePostDTO): Promise<Post
       excerpt: dto.excerpt !== undefined ? dto.excerpt.trim() : existing.excerpt,
       feature_image: dto.feature_image ?? existing.feature_image,
       status: nextStatus,
+      template: parsePostTemplate(dto.template ?? existing.template),
       tags: nextTags,
       reading_time: calculateReadingTime(nextMarkdown),
       published_at: publishedAt,
@@ -283,6 +287,7 @@ export async function updatePost(slug: string, dto: UpdatePostDTO): Promise<Post
   if (dto.excerpt !== undefined) updates.excerpt = dto.excerpt.trim();
   if (dto.feature_image !== undefined) updates.feature_image = dto.feature_image;
   if (dto.status !== undefined) updates.status = dto.status;
+  if (dto.template !== undefined) updates.template = parsePostTemplate(dto.template);
   if (dto.tags !== undefined) {
     updates.tags = normalizeTagList(dto.tags);
   }

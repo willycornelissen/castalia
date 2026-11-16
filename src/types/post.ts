@@ -1,4 +1,5 @@
 export type PostStatus = 'draft' | 'published';
+export type PostTemplate = 'article' | 'resenha';
 
 export interface Post {
   slug: string;
@@ -7,6 +8,7 @@ export interface Post {
   excerpt: string;
   feature_image: string;
   status: PostStatus;
+  template?: PostTemplate;
   tags: string[];
   reading_time: number;
   published_at: Date | null;
@@ -21,6 +23,7 @@ export interface CreatePostDTO {
   excerpt?: string;
   feature_image?: string;
   status: PostStatus;
+  template?: PostTemplate;
   tags?: string[];
 }
 
@@ -31,5 +34,6 @@ export interface UpdatePostDTO {
   excerpt?: string;
   feature_image?: string;
   status?: PostStatus;
+  template?: PostTemplate;
   tags?: string[];
 }

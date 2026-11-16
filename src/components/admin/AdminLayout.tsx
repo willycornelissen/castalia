@@ -1,13 +1,21 @@
 import type { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FileText, PlusCircle, ListOrdered, ExternalLink, LogOut } from 'lucide-react';
+import { FileText, PlusCircle, BookOpen, ListOrdered, ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { siteConfig } from '@/config/site.config';
+import { parsePostTemplate } from '@/utils/postTemplates';
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const searchParams = new URLSearchParams(location.search);
+  const isResenhaRoute =
+    location.pathname === '/admin/editor' &&
+    parsePostTemplate(searchParams.get('template')) === 'resenha';
+  const isArticleEditorRoute =
+    location.pathname.startsWith('/admin/editor') && !isResenhaRoute;
 
   const handleLogout = async () => {
     await logout();
@@ -44,13 +52,24 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <Link
               to="/admin/editor"
               className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors ${
-                location.pathname.startsWith('/admin/editor')
+                isArticleEditorRoute
                   ? 'bg-white/10 text-white'
                   : 'text-gray-300 hover:bg-white/5 hover:text-white'
               }`}
             >
               <PlusCircle className="w-4 h-4" />
               Novo Artigo
+            </Link>
+            <Link
+              to="/admin/editor?template=resenha"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors ${
+                isResenhaRoute
+                  ? 'bg-white/10 text-white'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" />
+              Nova Resenha
             </Link>
             <Link
               to="/admin/menu"
