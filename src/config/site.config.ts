@@ -7,8 +7,8 @@ export const siteConfig: SiteConfig = {
     'Castália é uma província pedagógica e utópica imaginada por Hermann Hesse em O Jogo das Contas de Vidro, concebida no futuro do século XXIII como um refúgio austero para a elite intelectual.',
   editionLabel: 'Edição Digital • Acesso Público',
   author: {
-    name: 'Willy Garabini Cornelissen',
-    bio: 'Arquiteto de software, escritor e entusiasta de sistemas distribuídos e jornalismo digital.',
+    name: 'Magister Ludi',
+    bio: 'A verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual',
     avatar: '',
     location: 'Brasil',
     social: {

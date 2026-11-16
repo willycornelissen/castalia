@@ -90,7 +90,12 @@ describe('Reader Chrome & Pages', () => {
       )
     ).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: /seções/i })).not.toBeInTheDocument();
-    expect(screen.getByText(/willy garabini cornelissen/i)).toBeInTheDocument();
+    expect(screen.getByText(/magister ludi/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /a verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual/i
+      )
+    ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /redação \/ admin/i })).toHaveAttribute(
       'href',
       '/admin'
