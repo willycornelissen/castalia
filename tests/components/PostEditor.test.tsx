@@ -170,7 +170,9 @@ describe('PostEditor', () => {
     // Pre-filled sections in Markdown and live preview
     const textarea = screen.getByPlaceholderText(/comece a escrever/i) as HTMLTextAreaElement;
     expect(textarea.value).toContain('## Informações Bibliográficas');
-    expect(textarea.value).toContain('## Leitura Analítica');
+    expect(textarea.value).toContain(
+      `## Leitura Analítica\n\n- O que o livro trata como um todo?\n\n- O que exatamente está sendo dito e como?\n\n- Qual é o julgamento que adotamos em relação às teses do livro?\n\n- Qual a importância do livro?`
+    );
     expect(textarea.value).toContain('## Excertos');
     expect(
       screen.getByRole('heading', { name: 'Informações Bibliográficas' })
