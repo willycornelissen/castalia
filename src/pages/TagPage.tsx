@@ -9,8 +9,13 @@ import { Footer } from '@/components/reader/Footer';
 
 const PAGE_SIZE = 10;
 
-export function TagPage() {
-  const { tag } = useParams<{ tag: string }>();
+interface TagPageProps {
+  tag?: string;
+}
+
+export function TagPage({ tag: propTag }: TagPageProps = {}) {
+  const { tag: routeTag } = useParams<{ tag: string }>();
+  const tag = propTag ?? routeTag;
   const [posts, setPosts] = useState<Post[]>([]);
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(false);

@@ -23,38 +23,6 @@ export function Footer() {
               {siteConfig.author.name}
             </p>
             <p className="text-sm text-muted mt-1">{siteConfig.author.bio}</p>
-            <div className="flex gap-4 mt-3 font-condensed text-xs uppercase tracking-wider">
-              {siteConfig.author.social.github && (
-                <a
-                  href={siteConfig.author.social.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  GitHub
-                </a>
-              )}
-              {siteConfig.author.social.twitter && (
-                <a
-                  href={siteConfig.author.social.twitter}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  Twitter
-                </a>
-              )}
-              {siteConfig.author.social.linkedin && (
-                <a
-                  href={siteConfig.author.social.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  LinkedIn
-                </a>
-              )}
-            </div>
           </div>
         </div>
 

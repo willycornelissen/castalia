@@ -59,19 +59,22 @@ describe('ArticleGrid', () => {
       </MemoryRouter>
     );
 
+    const novaAcropoleLink = screen.getByRole('link', { name: /nova acrópole/i });
+    expect(novaAcropoleLink).toHaveAttribute('href', 'http://www.acropolis.org');
+    expect(novaAcropoleLink).toHaveAttribute('target', '_blank');
+    expect(novaAcropoleLink).toHaveAttribute('rel', 'noopener noreferrer');
+
     const expectedLinks = [
-      { label: 'Nova Acrópole', href: '/tag/nova-acropole' },
-      { label: 'Grupo Fermata', href: '/tag/grupo-fermata' },
-      { label: 'Clube Dom Quixote', href: '/tag/clube-dom-quixote' },
-      { label: 'Clube Athena', href: '/tag/clube-athena' },
-      { label: 'Dáblio Labs', href: '/tag/dablio-labs' },
+      { label: 'Grupo Fermata', href: '/grupo-fermata' },
+      { label: 'Clube Dom Quixote', href: '/clube-dom-quixote' },
+      { label: 'Clube Athena', href: '/clube-athena' },
+      { label: 'Dáblio Labs', href: '/dablio-labs' },
     ];
 
     for (const item of expectedLinks) {
-      expect(screen.getByRole('link', { name: item.label })).toHaveAttribute(
-        'href',
-        item.href
-      );
+      const link = screen.getByRole('link', { name: item.label });
+      expect(link).toHaveAttribute('href', item.href);
+      expect(link).not.toHaveAttribute('target');
     }
 
     expect(screen.queryByText(/arquivo rápido/i)).not.toBeInTheDocument();

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { siteConfig } from '@/config/site.config';
+import { isExternalNavUrl } from '@/services/navigation.service';
 import type { Post } from '@/types/post';
 import { ArticleCard } from './ArticleCard';
 
@@ -70,19 +71,37 @@ export function ArticleGrid({
             }
           >
             <ul className="space-y-2">
-              {siteConfig.quickArchive.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className="font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5"
-                  >
+              {siteConfig.quickArchive.map((item) => {
+                const className =
+                  'font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5';
+                const content = (
+                  <>
                     <span>{item.label}</span>
                     <span aria-hidden="true" className="text-muted text-xs">
                       →
                     </span>
-                  </Link>
-                </li>
-              ))}
+                  </>
+                );
+
+                return (
+                  <li key={item.path}>
+                    {isExternalNavUrl(item.path) ? (
+                      <a
+                        href={item.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={className}
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <Link to={item.path} className={className}>
+                        {content}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
           {rightColumnPosts.map((post) => (

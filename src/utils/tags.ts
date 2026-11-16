@@ -6,6 +6,12 @@ export interface MenuTagOption {
   tag: string;
 }
 
+export interface TagSectionRoute {
+  label: string;
+  path: string;
+  tag: string;
+}
+
 /**
  * Normalizes and deduplicates an array of tags while preserving order.
  */
@@ -61,9 +67,41 @@ export function extractTagFromNavPath(path: string): string | null {
 }
 
 /**
- * Collects unique tag-backed sections defined in the navigation menu.
+ * Extracts internal tag section definitions from static paths (`/tag/<slug>` or `/<slug>`),
+ * skipping root `/` and external `http(s)://` URLs.
  */
-export function extractMenuTagOptions(items: NavItem[]): MenuTagOption[] {
+export function extractStaticTagSections(items: NavItem[]): TagSectionRoute[] {
+  const seen = new Set<string>();
+  const sections: TagSectionRoute[] = [];
+
+  for (const item of items) {
+    const trimmed = item.path.trim();
+    if (!trimmed || trimmed === '/' || /^https?:\/\//i.test(trimmed)) {
+      continue;
+    }
+
+    const fromTagRoute = extractTagFromNavPath(trimmed);
+    const rootMatch = trimmed.match(/^\/([^/?#]+)\/?$/);
+    const tag =
+      fromTagRoute ??
+      (rootMatch ? slugify(decodeURIComponent(rootMatch[1])) : '');
+
+    if (tag && !seen.has(tag)) {
+      seen.add(tag);
+      sections.push({ label: item.label, path: trimmed, tag });
+    }
+  }
+
+  return sections;
+}
+
+/**
+ * Collects unique tag-backed sections defined in the navigation menu and optional extra sections.
+ */
+export function extractMenuTagOptions(
+  items: NavItem[],
+  extraSections: MenuTagOption[] = []
+): MenuTagOption[] {
   const seen = new Set<string>();
   const options: MenuTagOption[] = [];
 
@@ -72,6 +110,13 @@ export function extractMenuTagOptions(items: NavItem[]): MenuTagOption[] {
     if (tag && !seen.has(tag)) {
       seen.add(tag);
       options.push({ label: item.label, tag });
+    }
+  }
+
+  for (const section of extraSections) {
+    if (section.tag && !seen.has(section.tag)) {
+      seen.add(section.tag);
+      options.push({ label: section.label, tag: section.tag });
     }
   }
 

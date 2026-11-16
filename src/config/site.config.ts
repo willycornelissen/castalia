@@ -11,11 +11,7 @@ export const siteConfig: SiteConfig = {
     bio: 'A verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual',
     avatar: '',
     location: 'Brasil',
-    social: {
-      github: 'https://github.com',
-      twitter: 'https://twitter.com',
-      linkedin: 'https://linkedin.com',
-    },
+    social: {},
   },
   navigation: [
     { label: 'Capa', path: '/' },
@@ -24,10 +20,10 @@ export const siteConfig: SiteConfig = {
     { label: 'Ensaios', path: '/tag/ensaios' },
   ],
   quickArchive: [
-    { label: 'Nova Acrópole', path: '/tag/nova-acropole' },
-    { label: 'Grupo Fermata', path: '/tag/grupo-fermata' },
-    { label: 'Clube Dom Quixote', path: '/tag/clube-dom-quixote' },
-    { label: 'Clube Athena', path: '/tag/clube-athena' },
-    { label: 'Dáblio Labs', path: '/tag/dablio-labs' },
+    { label: 'Nova Acrópole', path: 'http://www.acropolis.org' },
+    { label: 'Grupo Fermata', path: '/grupo-fermata' },
+    { label: 'Clube Dom Quixote', path: '/clube-dom-quixote' },
+    { label: 'Clube Athena', path: '/clube-athena' },
+    { label: 'Dáblio Labs', path: '/dablio-labs' },
   ],
 };

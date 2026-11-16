@@ -96,6 +96,9 @@ describe('Reader Chrome & Pages', () => {
         /a verdadeira mestria não é o domínio tirânico sobre o saber, mas a submissão impessoal à verdade e à ordem espiritual/i
       )
     ).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /github/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /twitter/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /linkedin/i })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: /redação \/ admin/i })).toHaveAttribute(
       'href',
       '/admin'

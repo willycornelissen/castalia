@@ -6,6 +6,7 @@ import { slugify } from '@/utils/slugify';
 import { calculateReadingTime } from '@/utils/readingTime';
 import {
   extractMenuTagOptions,
+  extractStaticTagSections,
   parseTagsInput,
   toggleTagInInput,
 } from '@/utils/tags';
@@ -41,10 +42,10 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
   const { items: navigationItems } = useNavigation();
 
   const readingTime = calculateReadingTime(contentMarkdown);
-  const menuTagOptions = extractMenuTagOptions([
-    ...navigationItems,
-    ...siteConfig.quickArchive,
-  ]);
+  const menuTagOptions = extractMenuTagOptions(
+    navigationItems,
+    extractStaticTagSections(siteConfig.quickArchive)
+  );
   const activeTags = parseTagsInput(tagsInput);
 
   const handleToggleTag = (tag: string) => {
