@@ -7,6 +7,7 @@ import { siteConfig } from '@/config/site.config';
 import { formatDate } from '@/utils/formatDate';
 import type { Post } from '@/types/post';
 import { Masthead } from '@/components/reader/Masthead';
+import { MediaImage } from '@/components/common/MediaImage';
 import { PostContent } from '@/components/reader/PostContent';
 import { TagBadge } from '@/components/reader/TagBadge';
 import { Footer } from '@/components/reader/Footer';
@@ -119,7 +120,7 @@ export function PostPage() {
 
             {post.feature_image && (
               <figure className="mb-8">
-                <img
+                <MediaImage
                   src={post.feature_image}
                   alt={post.title}
                   className="w-full h-auto max-h-[520px] object-cover border border-ink/15"

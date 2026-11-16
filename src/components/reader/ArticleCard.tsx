@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Post } from '@/types/post';
 import { formatDate } from '@/utils/formatDate';
+import { MediaImage } from '@/components/common/MediaImage';
 import { TagBadge } from './TagBadge';
 
 export type ArticleCardVariant = 'big' | 'horizontal' | 'small';
@@ -18,7 +19,7 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
       <article className="border-b border-ink/15 pb-6">
         {post.feature_image && (
           <Link to={`/post/${post.slug}`} className="block mb-4 overflow-hidden">
-            <img
+            <MediaImage
               src={post.feature_image}
               alt={post.title}
               loading="eager"
@@ -75,7 +76,7 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
     <article className="border-b border-ink/15 py-5 flex flex-col sm:flex-row gap-4 items-start">
       {post.feature_image && (
         <Link to={`/post/${post.slug}`} className="shrink-0 w-full sm:w-44 overflow-hidden">
-          <img
+          <MediaImage
             src={post.feature_image}
             alt={post.title}
             loading="lazy"

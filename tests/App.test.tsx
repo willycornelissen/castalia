@@ -35,11 +35,15 @@ vi.mock('@/services/posts.service', () => ({
   deletePost: vi.fn(),
 }));
 
-vi.mock('@/services/storage.service', () => ({
-  compressAndUploadMedia: vi.fn(),
-  deleteMediaByUrl: vi.fn(),
-  extractMediaUrlsFromMarkdown: vi.fn().mockReturnValue([]),
-}));
+vi.mock('@/services/storage.service', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/services/storage.service')>();
+  return {
+    ...actual,
+    compressAndUploadMedia: vi.fn(),
+    deleteMediaByUrl: vi.fn(),
+    extractMediaUrlsFromMarkdown: vi.fn().mockReturnValue([]),
+  };
+});
 
 vi.mock('@/services/navigation.service', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/services/navigation.service')>();

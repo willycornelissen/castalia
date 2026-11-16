@@ -42,5 +42,14 @@ service cloud.firestore {
                             && request.resource.data.items.size() <= 20;
       allow delete: if isAdmin();
     }
+
+    match /media/{mediaId} {
+      allow get: if true;
+      allow create, update: if isAdmin()
+                            && request.resource.data.data_url is string
+                            && request.resource.data.data_url.matches('^data:image/(webp|jpeg|png);base64,.+')
+                            && request.resource.data.data_url.size() <= 900000;
+      allow delete: if isAdmin();
+    }
   }
 }

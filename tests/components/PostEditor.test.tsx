@@ -6,9 +6,13 @@ import { NavigationProvider } from '@/context/NavigationContext';
 import * as navigationService from '@/services/navigation.service';
 import type { Post } from '@/types/post';
 
-vi.mock('@/services/storage.service', () => ({
-  compressAndUploadMedia: vi.fn().mockResolvedValue('https://cdn.test/inline.webp'),
-}));
+vi.mock('@/services/storage.service', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/services/storage.service')>();
+  return {
+    ...actual,
+    compressAndUploadMedia: vi.fn().mockResolvedValue('https://cdn.test/inline.webp'),
+  };
+});
 
 vi.mock('@/components/admin/ImageUploader', () => ({
   ImageUploader: ({ onUploaded }: { onUploaded: (url: string) => void }) => (
@@ -127,6 +131,29 @@ describe('PostEditor', () => {
           status: 'published',
           tags: ['editorial', 'cronicas', 'ia', 'arquitetura', 'ficcao', 'memoria'],
         })
+      );
+    });
+  });
+
+  it('inserts markdown image and renders preview when selecting a photo from computer', async () => {
+    const onSave = vi.fn().mockResolvedValue(undefined);
+
+    render(
+      <MemoryRouter>
+        <PostEditor onSave={onSave} isSaving={false} />
+      </MemoryRouter>
+    );
+
+    const fileInput = screen.getByLabelText(/inserir imagem do computador/i);
+    const file = new File(['raw-photo'], 'paisagem.jpg', { type: 'image/jpeg' });
+    fireEvent.change(fileInput, { target: { files: [file] } });
+
+    await waitFor(() => {
+      const textarea = screen.getByPlaceholderText(/comece a escrever/i) as HTMLTextAreaElement;
+      expect(textarea.value).toContain('![paisagem.jpg](https://cdn.test/inline.webp)');
+      expect(screen.getByRole('img', { name: 'paisagem.jpg' })).toHaveAttribute(
+        'src',
+        'https://cdn.test/inline.webp'
       );
     });
   });

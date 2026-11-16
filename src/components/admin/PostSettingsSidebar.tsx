@@ -1,4 +1,5 @@
 import { X, Lock } from 'lucide-react';
+import { MediaImage } from '@/components/common/MediaImage';
 import { ImageUploader } from './ImageUploader';
 import { parseTagsInput, type MenuTagOption } from '@/utils/tags';
 import type { PostStatus } from '@/types/post';
@@ -60,7 +61,7 @@ export function PostSettingsSidebar({
           </label>
           {featureImage ? (
             <div className="space-y-2">
-              <img
+              <MediaImage
                 src={featureImage}
                 alt="Capa do artigo"
                 className="w-full h-36 object-cover rounded border border-gray-200"

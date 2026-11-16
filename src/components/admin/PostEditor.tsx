@@ -10,6 +10,7 @@ import {
   toggleTagInInput,
 } from '@/utils/tags';
 import { useNavigation } from '@/context/NavigationContext';
+import { MediaImage } from '@/components/common/MediaImage';
 import { PostContent } from '@/components/reader/PostContent';
 import { PostSettingsSidebar } from './PostSettingsSidebar';
 import { compressAndUploadMedia } from '@/services/storage.service';
@@ -34,9 +35,11 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [inlineUploading, setInlineUploading] = useState(false);
+  const [inlineProgress, setInlineProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const inlineInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { items: navigationItems } = useNavigation();
 
   const readingTime = calculateReadingTime(contentMarkdown);
@@ -103,14 +106,32 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
     const file = e.target.files?.[0];
     if (!file) return;
     setInlineUploading(true);
+    setInlineProgress(0);
     setError(null);
     try {
-      const url = await compressAndUploadMedia(file, 'inline');
-      setContentMarkdown((prev) => `${prev}\n\n![${file.name}](${url})\n`);
+      const url = await compressAndUploadMedia(file, 'inline', (pct) =>
+        setInlineProgress(pct)
+      );
+      const imageMarkdown = `![${file.name}](${url})`;
+      const textarea = textareaRef.current;
+      const start = textarea?.selectionStart ?? null;
+      const end = textarea?.selectionEnd ?? null;
+
+      setContentMarkdown((prev) => {
+        if (start !== null && end !== null && start <= prev.length && end <= prev.length) {
+          const before = prev.slice(0, start);
+          const after = prev.slice(end);
+          const leadingBreak = before && !before.endsWith('\n') ? '\n\n' : '';
+          const trailingBreak = after && !after.startsWith('\n') ? '\n\n' : '\n';
+          return `${before}${leadingBreak}${imageMarkdown}${trailingBreak}${after}`;
+        }
+        return prev ? `${prev}\n\n${imageMarkdown}\n` : `${imageMarkdown}\n`;
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro no upload da imagem.');
     } finally {
       setInlineUploading(false);
+      setInlineProgress(0);
       e.target.value = '';
     }
   };
@@ -142,12 +163,13 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50 text-gray-700"
           >
             <ImagePlus className="w-4 h-4" />
-            {inlineUploading ? 'Enviando...' : 'Inserir Imagem'}
+            {inlineUploading ? `Enviando... ${inlineProgress}%` : 'Inserir Imagem'}
           </button>
           <input
             ref={inlineInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            aria-label="Inserir imagem do computador"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
             className="hidden"
             onChange={handleInlineImageSelect}
           />
@@ -256,6 +278,7 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
           </div>
 
           <textarea
+            ref={textareaRef}
             value={contentMarkdown}
             onChange={(e) => setContentMarkdown(e.target.value)}
             placeholder="Comece a escrever sua história em Markdown..."
@@ -273,7 +296,7 @@ export function PostEditor({ initialPost, onSave, isSaving }: PostEditorProps) {
                 {title || 'Sem título'}
               </h1>
               {featureImage && (
-                <img
+                <MediaImage
                   src={featureImage}
                   alt={title}
                   className="w-full h-64 object-cover mb-6 border border-ink/15"

@@ -6,13 +6,16 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
+import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import {
   compressAndUploadMedia,
   deleteMediaByUrl,
   extractMediaUrlsFromMarkdown,
+  resolveMediaUrl,
 } from '@/services/storage.service';
 
 vi.mock('@/services/firebase', () => ({
+  db: { name: 'mock-db' },
   storage: { name: 'mock-storage' },
 }));
 
@@ -25,6 +28,16 @@ vi.mock('firebase/storage', () => ({
   uploadBytesResumable: vi.fn(),
   getDownloadURL: vi.fn(),
   deleteObject: vi.fn(),
+}));
+
+vi.mock('firebase/firestore', () => ({
+  doc: vi.fn((_db, col, id) => ({ path: `${col}/${id}` })),
+  getDoc: vi.fn(),
+  setDoc: vi.fn(),
+  deleteDoc: vi.fn(),
+  Timestamp: {
+    now: vi.fn(() => ({ seconds: 1700000000, nanoseconds: 0 })),
+  },
 }));
 
 describe('storage.service', () => {
@@ -105,6 +118,54 @@ describe('storage.service', () => {
         maxWidthOrHeight: 600,
       })
     );
+  });
+
+  it('falls back to Firestore media storage when Firebase Storage fails and resolves/deletes cleanly', async () => {
+    const file = new File(['raw'], 'local-photo.jpg', { type: 'image/jpeg' });
+    const compressedBlob = new File(['webp-data'], 'local-photo.webp', {
+      type: 'image/webp',
+    });
+    vi.mocked(imageCompression).mockResolvedValue(compressedBlob);
+
+    const mockTask = {
+      snapshot: { ref: 'failed-ref' },
+      cancel: vi.fn(),
+      on: vi.fn((_e, _p, onError) => {
+        onError(new Error('Bucket not found (404)'));
+      }),
+    };
+    vi.mocked(uploadBytesResumable).mockReturnValue(mockTask as never);
+    vi.mocked(setDoc).mockResolvedValue(undefined);
+    vi.mocked(deleteDoc).mockResolvedValue(undefined);
+
+    const uri = await compressAndUploadMedia(file, 'inline');
+
+    expect(uri).toMatch(/^castalia-media:\/\/\d+-local-photo$/);
+    expect(setDoc).toHaveBeenCalledWith(
+      expect.objectContaining({ path: expect.stringMatching(/^media\/\d+-local-photo$/) }),
+      expect.objectContaining({
+        data_url: expect.stringMatching(/^data:image\/webp;base64,/),
+        content_type: 'image/webp',
+      })
+    );
+
+    // Cached immediately in memory without hitting getDoc
+    await expect(resolveMediaUrl(uri)).resolves.toMatch(/^data:image\/webp;base64,/);
+    expect(getDoc).not.toHaveBeenCalled();
+
+    // Deleting a castalia-media:// reference removes the Firestore doc
+    await deleteMediaByUrl(uri);
+    expect(deleteDoc).toHaveBeenCalledTimes(1);
+
+    // Uncached castalia-media:// fetches from Firestore
+    vi.mocked(getDoc).mockResolvedValueOnce({
+      exists: () => true,
+      data: () => ({ data_url: 'data:image/webp;base64,QUJD' }),
+    } as never);
+    await expect(resolveMediaUrl('castalia-media://remote-1')).resolves.toBe(
+      'data:image/webp;base64,QUJD'
+    );
+    expect(doc).toHaveBeenCalledWith({ name: 'mock-db' }, 'media', 'remote-1');
   });
 
   it('deletes Firebase Storage media safely by URL and ignores external or missing files', async () => {

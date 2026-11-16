@@ -1,9 +1,26 @@
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { defaultUrlTransform } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import { MediaImage } from '@/components/common/MediaImage';
+import { FIRESTORE_MEDIA_PREFIX } from '@/services/storage.service';
 
 interface PostContentProps {
   markdown: string;
+}
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  protocols: {
+    ...defaultSchema.protocols,
+    src: [...(defaultSchema.protocols?.src ?? ['http', 'https']), 'castalia-media'],
+  },
+};
+
+function safeMarkdownUrlTransform(url: string): string {
+  if (url.startsWith(FIRESTORE_MEDIA_PREFIX)) {
+    return url;
+  }
+  return defaultUrlTransform(url);
 }
 
 /**
@@ -14,10 +31,11 @@ export function PostContent({ markdown }: PostContentProps) {
     <div className="newspaper-prose">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeSanitize]}
+        rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}
+        urlTransform={safeMarkdownUrlTransform}
         components={{
           img: ({ src, alt }) => (
-            <img
+            <MediaImage
               src={src ?? ''}
               alt={alt ?? ''}
               loading="lazy"

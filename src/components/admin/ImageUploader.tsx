@@ -50,7 +50,7 @@ export function ImageUploader({
         <input
           type="file"
           aria-label={label}
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
           onChange={handleFileChange}
           disabled={uploading}
           className="sr-only"
