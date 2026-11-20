@@ -28,15 +28,18 @@ export function ArticleGrid({
   }
 
   const leadPost = posts[0];
-  const leftColumnPosts = posts.slice(1, 4);
-  const rightColumnPosts = posts.slice(4, 7);
-  const centerListPosts = posts.slice(7);
+  const centerListPosts = [...posts.slice(1, 3), ...posts.slice(9)];
+  const leftColumnPosts = posts.slice(3, 6);
+  const rightColumnPosts = posts.slice(6, 9);
 
   return (
     <section className="newspaper-container py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Small editorial headlines */}
-        <div className="lg:col-span-3 lg:border-r lg:border-ink/15 lg:pr-6 order-2 lg:order-1">
+        <div
+          data-testid="left-column"
+          className="lg:col-span-3 lg:border-r lg:border-ink/15 lg:pr-6 order-2 lg:order-1"
+        >
           <h2 className="font-condensed text-xs uppercase tracking-widest font-bold border-b-2 border-ink pb-2 mb-4">
             Destaques Recentes
           </h2>
@@ -50,7 +53,7 @@ export function ArticleGrid({
         </div>
 
         {/* Center Column: Lead story + horizontal feed */}
-        <div className="lg:col-span-6 order-1 lg:order-2">
+        <div data-testid="center-column" className="lg:col-span-6 order-1 lg:order-2">
           <ArticleCard post={leadPost} variant="big" />
 
           {centerListPosts.length > 0 && (
@@ -63,7 +66,10 @@ export function ArticleGrid({
         </div>
 
         {/* Right Column: Compact digest */}
-        <div className="lg:col-span-3 lg:border-l lg:border-ink/15 lg:pl-6 order-3">
+        <div
+          data-testid="right-column"
+          className="lg:col-span-3 lg:border-l lg:border-ink/15 lg:pl-6 order-3"
+        >
           <nav
             aria-label="Seções em destaque"
             className={

@@ -7,7 +7,7 @@ import { AnnouncementBar } from '@/components/reader/AnnouncementBar';
 import { ArticleGrid } from '@/components/reader/ArticleGrid';
 import { Footer } from '@/components/reader/Footer';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 export function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
