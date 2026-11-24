@@ -1,14 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { siteConfig } from '@/config/site.config';
-import { isExternalNavUrl } from '@/services/navigation.service';
+import { isExternalNavUrl } from '@/utils/url';
 import type { Post } from '@/types/post';
+import type { StaticHtmlPage } from '@/utils/staticPages';
 import { ArticleCard } from './ArticleCard';
+import { StaticHtmlContent } from './StaticHtmlContent';
 
 interface ArticleGridProps {
   posts: Post[];
   hasMore: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
+  staticPage?: StaticHtmlPage;
 }
 
 export function ArticleGrid({
@@ -16,8 +19,11 @@ export function ArticleGrid({
   hasMore,
   loadingMore,
   onLoadMore,
+  staticPage,
 }: ArticleGridProps) {
-  if (posts.length === 0) {
+  const location = useLocation();
+
+  if (!staticPage && posts.length === 0) {
     return (
       <div className="newspaper-container py-16 text-center">
         <p className="font-serif text-2xl text-muted italic">
@@ -52,16 +58,24 @@ export function ArticleGrid({
           )}
         </div>
 
-        {/* Center Column: Lead story + horizontal feed */}
+        {/* Center Column: Lead story + horizontal feed, or active static page */}
         <div data-testid="center-column" className="lg:col-span-6 order-1 lg:order-2">
-          <ArticleCard post={leadPost} variant="big" />
+          {staticPage ? (
+            <article aria-label={staticPage.title}>
+              <StaticHtmlContent html={staticPage.bodyHtml} />
+            </article>
+          ) : (
+            <>
+              <ArticleCard post={leadPost} variant="big" />
 
-          {centerListPosts.length > 0 && (
-            <div className="mt-4">
-              {centerListPosts.map((post) => (
-                <ArticleCard key={post.slug} post={post} variant="horizontal" />
-              ))}
-            </div>
+              {centerListPosts.length > 0 && (
+                <div className="mt-4">
+                  {centerListPosts.map((post) => (
+                    <ArticleCard key={post.slug} post={post} variant="horizontal" />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -78,8 +92,11 @@ export function ArticleGrid({
           >
             <ul className="space-y-2">
               {siteConfig.quickArchive.map((item) => {
-                const className =
-                  'font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5';
+                const isExternal = isExternalNavUrl(item.path);
+                const isActive = !isExternal && location.pathname === item.path;
+                const className = `font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5${
+                  isActive ? ' underline' : ''
+                }`;
                 const content = (
                   <>
                     <span>{item.label}</span>
@@ -91,7 +108,7 @@ export function ArticleGrid({
 
                 return (
                   <li key={item.path}>
-                    {isExternalNavUrl(item.path) ? (
+                    {isExternal ? (
                       <a
                         href={item.path}
                         target="_blank"
@@ -101,7 +118,11 @@ export function ArticleGrid({
                         {content}
                       </a>
                     ) : (
-                      <Link to={item.path} className={className}>
+                      <Link
+                        to={item.path}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={className}
+                      >
                         {content}
                       </Link>
                     )}
@@ -116,7 +137,7 @@ export function ArticleGrid({
         </div>
       </div>
 
-      {hasMore && (
+      {!staticPage && hasMore && (
         <div className="mt-10 text-center border-t border-ink/15 pt-8">
           <button
             type="button"

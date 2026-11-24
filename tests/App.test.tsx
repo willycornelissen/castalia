@@ -73,13 +73,19 @@ describe('App routing shell', () => {
     });
   });
 
-  it('renders NotFoundPage for quick-archive static page links that do not exist yet', async () => {
-    window.history.pushState({}, '', '/grupo-fermata');
+  it.each([
+    { path: '/grupo-fermata', title: 'Grupo Fermata' },
+    { path: '/clube-dom-quixote', title: 'Clube Dom Quixote' },
+    { path: '/clube-athena', title: 'Clube Athena' },
+    { path: '/dablio-labs', title: 'Dáblio Labs' },
+  ])('renders static HTML page for $path in the center column', async ({ path, title }) => {
+    window.history.pushState({}, '', path);
     render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByText(/404/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument();
     });
+    expect(screen.queryByRole('heading', { name: '404' })).not.toBeInTheDocument();
   });
 
   it('renders NotFoundPage on unknown paths', async () => {

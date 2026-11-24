@@ -209,4 +209,32 @@ describe('Reader Pages', () => {
       articleHeading.compareDocumentPosition(articleImg) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
   });
+
+  it('HomePage renders staticPage in center column even when posts list is empty or fails to load', async () => {
+    vi.mocked(postsService.getPublishedPosts).mockRejectedValueOnce(new Error('Network error'));
+
+    render(
+      <MemoryRouter initialEntries={['/dablio-labs']}>
+        <HomePage
+          staticPage={{
+            slug: 'dablio-labs',
+            path: '/dablio-labs',
+            label: 'Dáblio Labs',
+            title: 'Dáblio Labs',
+            bodyHtml: '<h1>Dáblio Labs</h1>',
+          }}
+        />
+      </MemoryRouter>
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Dáblio Labs' })
+    ).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(postsService.getPublishedPosts).toHaveBeenCalledTimes(1);
+    });
+    expect(screen.queryByText(/não foi possível carregar/i)).not.toBeInTheDocument();
+    expect(document.title).toContain('Dáblio Labs');
+  });
 });

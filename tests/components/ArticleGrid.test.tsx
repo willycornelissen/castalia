@@ -3,6 +3,7 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ArticleGrid } from '@/components/reader/ArticleGrid';
 import type { Post } from '@/types/post';
+import type { StaticHtmlPage } from '@/utils/staticPages';
 
 const makePost = (i: number): Post => ({
   slug: `post-${i}`,
@@ -143,5 +144,44 @@ describe('ArticleGrid', () => {
     expect(within(centerColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(centerColumn).getByText('Matéria Número 10')).toBeInTheDocument();
     expect(within(centerColumn).getByText('Matéria Número 11')).toBeInTheDocument();
+  });
+
+  it('renders static HTML page in the center column while keeping side columns intact', () => {
+    const posts = Array.from({ length: 9 }, (_, idx) => makePost(idx + 1));
+    const staticPage: StaticHtmlPage = {
+      slug: 'grupo-fermata',
+      path: '/grupo-fermata',
+      label: 'Grupo Fermata',
+      title: 'Grupo Fermata',
+      bodyHtml: '<h1>Grupo Fermata</h1>',
+    };
+
+    render(
+      <MemoryRouter initialEntries={['/grupo-fermata']}>
+        <ArticleGrid
+          posts={posts}
+          hasMore={true}
+          loadingMore={false}
+          onLoadMore={vi.fn()}
+          staticPage={staticPage}
+        />
+      </MemoryRouter>
+    );
+
+    const centerColumn = screen.getByTestId('center-column');
+    const leftColumn = screen.getByTestId('left-column');
+    const rightColumn = screen.getByTestId('right-column');
+
+    expect(
+      within(centerColumn).getByRole('heading', { level: 1, name: 'Grupo Fermata' })
+    ).toBeInTheDocument();
+    expect(within(centerColumn).queryByText('Matéria Número 1')).not.toBeInTheDocument();
+    expect(within(leftColumn).getByText('Matéria Número 4')).toBeInTheDocument();
+    expect(within(rightColumn).getByText('Matéria Número 7')).toBeInTheDocument();
+    expect(within(rightColumn).getByRole('link', { name: 'Grupo Fermata' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+    expect(screen.queryByRole('button', { name: /carregar mais/i })).not.toBeInTheDocument();
   });
 });

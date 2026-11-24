@@ -2,15 +2,14 @@ import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from './firebase';
 import { siteConfig } from '@/config/site.config';
 import { slugify } from '@/utils/slugify';
+import { isExternalNavUrl } from '@/utils/url';
 import type { NavItem } from '@/types/site';
 
 const SETTINGS_COLLECTION = 'settings';
 const NAVIGATION_DOC_ID = 'navigation';
 const MAX_NAV_ITEMS = 20;
 
-export function isExternalNavUrl(path: string): boolean {
-  return /^https?:\/\//i.test(path.trim());
-}
+export { isExternalNavUrl };
 
 /**
  * Normalizes and validates a menu path (internal `/...` route or external `http(s)://` URL).

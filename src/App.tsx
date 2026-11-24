@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { NavigationProvider } from '@/context/NavigationContext';
 import { AuthGuard } from '@/components/admin/AuthGuard';
+import { quickArchiveStaticPages } from '@/utils/staticPages';
 import { HomePage } from '@/pages/HomePage';
 import { PostPage } from '@/pages/PostPage';
 import { TagPage } from '@/pages/TagPage';
@@ -39,6 +40,13 @@ export default function App() {
         <Routes>
           {/* Public Reader Routes */}
           <Route path="/" element={<HomePage />} />
+          {quickArchiveStaticPages.map((page) => (
+            <Route
+              key={page.path}
+              path={page.path}
+              element={<HomePage staticPage={page} />}
+            />
+          ))}
           <Route path="/post/:slug" element={<PostPage />} />
           <Route path="/tag/:tag" element={<TagPage />} />
 
