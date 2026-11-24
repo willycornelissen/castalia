@@ -1,7 +1,16 @@
 {
   "projects": {
+    "default": "castalia-5a039",
     "staging": "castalia-5a039"
   },
-  "targets": {},
+  "targets": {
+    "castalia-5a039": {
+      "hosting": {
+        "castalia": [
+          "castalia"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

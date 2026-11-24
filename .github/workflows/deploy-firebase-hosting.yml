@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Firebase Hosting
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: firebase-hosting
   cancel-in-progress: false
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,12 +25,17 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Verify Firebase Secrets
+      - name: Verify Secrets
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039 }}
         run: |
           if [ -z "$VITE_FIREBASE_API_KEY" ]; then
-            echo "::error::Configure os secrets VITE_FIREBASE_* em Settings -> Secrets and variables -> Actions antes do deploy via GitHub Actions."
+            echo "::error::Configure os secrets VITE_FIREBASE_* em Settings -> Secrets and variables -> Actions antes do deploy."
+            exit 1
+          fi
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039" ]; then
+            echo "::error::Configure o secret FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039 em Settings -> Secrets and variables -> Actions (JSON da service account com permissão Firebase Hosting Admin)."
             exit 1
           fi
 
@@ -51,21 +54,11 @@ jobs:
           VITE_FIREBASE_ADMIN_UID: ${{ secrets.VITE_FIREBASE_ADMIN_UID }}
         run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Firebase Hosting (castalia.web.app)
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039 }}
+          channelId: live
+          projectId: castalia-5a039
+          target: castalia

@@ -1,6 +1,6 @@
-# Castalia — Ghost Newspaper Clone (GitHub Pages + Firebase)
+# Castalia — Ghost Newspaper Clone (Firebase Hosting + Firebase)
 
-Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema editorial **Newspaper**, desenvolvida com **React + TypeScript + Vite + Tailwind CSS**, pronta para publicação no **GitHub Pages** (com migração opcional para Firebase Hosting) e backend no **Firebase** (**Cloud Firestore**, **Firebase Authentication** e opcionalmente **Firebase Storage**).
+Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema editorial **Newspaper**, desenvolvida com **React + TypeScript + Vite + Tailwind CSS**, hospedada no **Firebase Hosting** (`https://castalia.web.app`) e com backend no **Firebase** (**Cloud Firestore**, **Firebase Authentication** e opcionalmente **Firebase Storage**).
 
 ## Arquitetura
 
@@ -10,9 +10,9 @@ Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema e
 - **Painel Administrativo (`/admin/login`, `/admin`, `/admin/editor`, `/admin/editor/:slug`)**:
   - Carregado sob demanda via `React.lazy()` + `Suspense` e protegido por `AuthGuard` e regras de segurança Firebase baseadas no `ADMIN_UID`.
   - Editor Markdown com preview ao vivo, seleção de tags, upload/compressão WebP client-side ou URL externa de imagens, e trava de slug após publicação.
-- **GitHub Pages + URLs Limpas**:
-  - `vite.config.ts` usa `base: '/'` por padrão (para o domínio customizado `castalia.willy.dev.br` ou Firebase Hosting; configurável via `VITE_BASE_PATH=/castalia/` para subcaminho padrão do `github.io`).
-  - `BrowserRouter` usa `basename={import.meta.env.BASE_URL}` combinado com `public/404.html` + restauração de rota em `index.html`, `public/.nojekyll` e `public/CNAME` para suportar URLs limpas no GitHub Pages.
+- **Firebase Hosting + URLs Limpas (`https://castalia.web.app`)**:
+  - `vite.config.ts` usa `base: '/'` por padrão.
+  - `firebase.json` configura o target `castalia` (mapeado em `.firebaserc` para o site `castalia` no projeto `castalia-5a039`) com rewrite nativo `** -> /index.html`, headers de segurança e cache imutável de 1 ano para assets estáticos e fontes.
 
 ## Configuração Inicial
 
@@ -51,14 +51,14 @@ Aplicação Single-Page Application (SPA) inspirada no CMS **Ghost** e no tema e
   npm run test:coverage
   ```
 
-- Build de produção (gera `dist/` configurado para `/` no domínio `castalia.willy.dev.br`):
+- Build de produção (gera `dist/` configurado para `/` em `https://castalia.web.app`):
   ```bash
   npm run build
   ```
 
 ## Deploy do Backend Firebase (Regras e Índices)
 
-Certifique-se de ter feito `firebase login` e `firebase use --add`:
+Certifique-se de ter feito `firebase login` e configurado o projeto em `.firebaserc` (`castalia-5a039`):
 
 - **Apenas Firestore (plano gratuito Spark, sem Storage/Blaze):**
   ```bash
@@ -69,18 +69,19 @@ Certifique-se de ter feito `firebase login` e `firebase use --add`:
   npm run deploy:rules
   ```
 
-## Deploy no GitHub Pages
+## Deploy no Firebase Hosting (`castalia.web.app`)
 
 ### Opção 1: Publicação direta pelo terminal (usa o `.env` local)
-1. Execute:
+1. Certifique-se de estar autenticado na CLI do Firebase (`firebase login`).
+2. Execute:
    ```bash
-   npm run deploy:gh-pages
+   npm run deploy:hosting
    ```
-2. No GitHub (**Settings → Pages**), selecione **Deploy from a branch** → branch **`gh-pages`** → pasta **`/ (root)`**.
-3. Acesse `https://castalia.willy.dev.br/`.
+3. Acesse `https://castalia.web.app/`.
 
 ### Opção 2: Publicação automática via GitHub Actions
 1. No GitHub (**Settings → Secrets and variables → Actions**), cadastre os secrets:
+   - `FIREBASE_SERVICE_ACCOUNT_CASTALIA_5A039` (JSON da service account com permissão *Firebase Hosting Admin*)
    - `VITE_FIREBASE_API_KEY`
    - `VITE_FIREBASE_AUTH_DOMAIN`
    - `VITE_FIREBASE_PROJECT_ID`
@@ -88,7 +89,6 @@ Certifique-se de ter feito `firebase login` e `firebase use --add`:
    - `VITE_FIREBASE_MESSAGING_SENDER_ID`
    - `VITE_FIREBASE_APP_ID`
    - `VITE_FIREBASE_ADMIN_UID`
-2. Em **Settings → Pages**, selecione **Source: GitHub Actions**.
-3. Cada `git push` na branch `main` fará build e deploy automaticamente por meio de `.github/workflows/deploy-gh-pages.yml`.
+2. Cada `git push` na branch `main` fará build e deploy automaticamente em `https://castalia.web.app` por meio de `.github/workflows/deploy-firebase-hosting.yml`.
 
-> **Importante (Firebase Auth):** no Firebase Console, em **Authentication → Settings → Authorized domains**, adicione `castalia.willy.dev.br` (e `willycornelissen.github.io`, se aplicável) para permitir login no `/admin/login` quando hospedado no GitHub Pages.
+> **Importante (Firebase Auth):** no Firebase Console, em **Authentication → Settings → Authorized domains**, confirme que `castalia.web.app` está listado para permitir login no `/admin/login`.

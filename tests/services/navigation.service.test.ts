@@ -31,7 +31,7 @@ describe('navigation.service', () => {
   });
 
   it('detects external http/https URLs accurately', () => {
-    expect(isExternalNavUrl('https://castalia.willy.dev.br')).toBe(true);
+    expect(isExternalNavUrl('https://castalia.web.app')).toBe(true);
     expect(isExternalNavUrl('http://example.com')).toBe(true);
     expect(isExternalNavUrl('/tag/editorial')).toBe(false);
     expect(isExternalNavUrl('/')).toBe(false);

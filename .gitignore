@@ -21,4 +21,5 @@ Thumbs.db
 # Cache and Logs
 *.log
 .cache/
+.firebase/
 tmp/

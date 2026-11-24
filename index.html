@@ -16,27 +16,6 @@
       href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Open+Sans:ital,wght@0,400..700;1,400..700&family=Roboto+Condensed:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <script>
-      // Restore clean SPA URL redirected by GitHub Pages 404.html
-      (function (l) {
-        if (l.search[1] === '/') {
-          var decoded = l.search
-            .slice(1)
-            .split('&')
-            .map(function (s) {
-              return s.replace(/~and~/g, '&');
-            })
-            .join('?');
-          if (decoded.charAt(0) === '/' && decoded.charAt(1) !== '/') {
-            window.history.replaceState(
-              null,
-              null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-            );
-          }
-        }
-      })(window.location);
-    </script>
   </head>
   <body class="bg-paper text-ink antialiased">
     <div id="root"></div>
