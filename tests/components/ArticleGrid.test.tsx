@@ -82,7 +82,7 @@ describe('ArticleGrid', () => {
     expect(screen.queryByText(/mais edições em breve/i)).not.toBeInTheDocument();
   });
 
-  it('displays the three latest posts in the center column and distributes remaining posts to side columns', () => {
+  it('displays the lead post in the center column and distributes the next 3 posts to left and right columns', () => {
     const posts = Array.from({ length: 9 }, (_, idx) => makePost(idx + 1));
 
     render(
@@ -96,22 +96,22 @@ describe('ArticleGrid', () => {
     const rightColumn = screen.getByTestId('right-column');
 
     expect(within(centerColumn).getByText('Matéria Número 1')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 2')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 3')).toBeInTheDocument();
-    expect(within(centerColumn).queryByText('Matéria Número 4')).not.toBeInTheDocument();
+    expect(within(centerColumn).queryByText('Matéria Número 2')).not.toBeInTheDocument();
+    expect(within(centerColumn).getByText('Matéria Número 8')).toBeInTheDocument();
+    expect(within(centerColumn).getByText('Matéria Número 9')).toBeInTheDocument();
 
+    expect(within(leftColumn).getByText('Matéria Número 2')).toBeInTheDocument();
+    expect(within(leftColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(leftColumn).getByText('Matéria Número 4')).toBeInTheDocument();
-    expect(within(leftColumn).getByText('Matéria Número 5')).toBeInTheDocument();
-    expect(within(leftColumn).getByText('Matéria Número 6')).toBeInTheDocument();
-    expect(within(leftColumn).queryByText('Matéria Número 2')).not.toBeInTheDocument();
+    expect(within(leftColumn).queryByText('Matéria Número 5')).not.toBeInTheDocument();
 
+    expect(within(rightColumn).getByText('Matéria Número 5')).toBeInTheDocument();
+    expect(within(rightColumn).getByText('Matéria Número 6')).toBeInTheDocument();
     expect(within(rightColumn).getByText('Matéria Número 7')).toBeInTheDocument();
-    expect(within(rightColumn).getByText('Matéria Número 8')).toBeInTheDocument();
-    expect(within(rightColumn).getByText('Matéria Número 9')).toBeInTheDocument();
   });
 
-  it('shows all three latest posts in the center column even when only three posts exist', () => {
-    const posts = Array.from({ length: 3 }, (_, idx) => makePost(idx + 1));
+  it('shows fallback message in left column when only one post exists', () => {
+    const posts = [makePost(1)];
 
     render(
       <MemoryRouter>
@@ -123,27 +123,7 @@ describe('ArticleGrid', () => {
     const leftColumn = screen.getByTestId('left-column');
 
     expect(within(centerColumn).getByText('Matéria Número 1')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 2')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(leftColumn).getByText(/sem matérias secundárias/i)).toBeInTheDocument();
-  });
-
-  it('appends posts loaded beyond the initial 9 into the center column', () => {
-    const posts = Array.from({ length: 11 }, (_, idx) => makePost(idx + 1));
-
-    render(
-      <MemoryRouter>
-        <ArticleGrid posts={posts} hasMore={false} loadingMore={false} onLoadMore={vi.fn()} />
-      </MemoryRouter>
-    );
-
-    const centerColumn = screen.getByTestId('center-column');
-
-    expect(within(centerColumn).getByText('Matéria Número 1')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 2')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 3')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 10')).toBeInTheDocument();
-    expect(within(centerColumn).getByText('Matéria Número 11')).toBeInTheDocument();
   });
 
   it('renders static HTML page in the center column while keeping side columns intact', () => {
@@ -176,8 +156,10 @@ describe('ArticleGrid', () => {
       within(centerColumn).getByRole('heading', { level: 1, name: 'Grupo Fermata' })
     ).toBeInTheDocument();
     expect(within(centerColumn).queryByText('Matéria Número 1')).not.toBeInTheDocument();
+    expect(within(leftColumn).getByText('Matéria Número 2')).toBeInTheDocument();
+    expect(within(leftColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(leftColumn).getByText('Matéria Número 4')).toBeInTheDocument();
-    expect(within(rightColumn).getByText('Matéria Número 7')).toBeInTheDocument();
+    expect(within(rightColumn).getByText('Matéria Número 5')).toBeInTheDocument();
     expect(within(rightColumn).getByRole('link', { name: 'Grupo Fermata' })).toHaveAttribute(
       'aria-current',
       'page'

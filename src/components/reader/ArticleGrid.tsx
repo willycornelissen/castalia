@@ -34,9 +34,9 @@ export function ArticleGrid({
   }
 
   const leadPost = posts[0];
-  const centerListPosts = [...posts.slice(1, 3), ...posts.slice(9)];
-  const leftColumnPosts = posts.slice(3, 6);
-  const rightColumnPosts = posts.slice(6, 9);
+  const leftColumnPosts = posts.slice(1, 4);
+  const rightColumnPosts = posts.slice(4, 7);
+  const centerListPosts = posts.slice(7);
 
   return (
     <section className="newspaper-container py-8">
