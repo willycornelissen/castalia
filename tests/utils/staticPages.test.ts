@@ -20,15 +20,20 @@ describe('staticPages utilities', () => {
     expect(grupoFermata?.bodyHtml).toContain('src="/fermata-logo.png"');
     expect(grupoFermata?.bodyHtml).toContain('Propósito');
 
+    const clubeDomQuixote = quickArchiveStaticPages.find((page) => page.slug === 'clube-dom-quixote');
+    expect(clubeDomQuixote?.title).toBe('Clube Dom Quixote');
+    expect(clubeDomQuixote?.bodyHtml).toContain('<h1>Clube Dom Quixote</h1>');
+    expect(clubeDomQuixote?.bodyHtml).toContain('src="/quixote-logo.jpg"');
+    expect(clubeDomQuixote?.bodyHtml).toContain('Miguel de Cervantes nos legou mais do que um personagem');
+
     expect(
       quickArchiveStaticPages
-        .filter((page) => page.slug !== 'grupo-fermata')
+        .filter((page) => page.slug !== 'grupo-fermata' && page.slug !== 'clube-dom-quixote')
         .map((page) => ({
           title: page.title,
           bodyHtml: page.bodyHtml,
         }))
     ).toEqual([
-      { title: 'Clube Dom Quixote', bodyHtml: '<h1>Clube Dom Quixote</h1>' },
       { title: 'Clube Athena', bodyHtml: '<h1>Clube Athena</h1>' },
       { title: 'Dáblio Labs', bodyHtml: '<h1>Dáblio Labs</h1>' },
     ]);

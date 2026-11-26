@@ -4,8 +4,217 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clube Dom Quixote</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #faf8f5;
+        --card-bg: #ffffff;
+        --text-primary: #1c1b18;
+        --text-secondary: #4a453e;
+        --accent-color: #7c5228;
+        --border-color: #e6dfd5;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: "Cormorant Garamond", Georgia, serif;
+        line-height: 1.75;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .quixote-page {
+        max-width: 720px;
+        width: 100%;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.75rem;
+      }
+
+      .quixote-emblem {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+      }
+
+      .quixote-emblem img {
+        display: block;
+        width: 190px;
+        max-width: 60%;
+        height: auto;
+        mix-blend-mode: multiply;
+      }
+
+      h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(2.2rem, 4.5vw, 3.1rem);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
+      }
+
+      .divider {
+        width: 64px;
+        height: 1px;
+        background-color: var(--accent-color);
+        margin: 1.25rem auto 0;
+        opacity: 0.7;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .quixote-prologue p {
+        font-size: 1.32rem;
+        color: var(--text-primary);
+        text-align: justify;
+      }
+
+      .quixote-prologue p::first-letter {
+        float: left;
+        font-size: 3.6rem;
+        line-height: 0.85;
+        font-weight: 700;
+        color: var(--accent-color);
+        padding-right: 0.55rem;
+        padding-top: 0.15rem;
+      }
+
+      .quixote-manifesto {
+        text-align: center;
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .quixote-manifesto p {
+        font-size: 1.45rem;
+        font-style: italic;
+        font-weight: 600;
+        color: var(--accent-color);
+      }
+
+      .quixote-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 4px;
+        padding: 2rem 2.25rem;
+        box-shadow: 0 10px 30px rgba(28, 27, 24, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .quixote-card p {
+        font-size: 1.24rem;
+        color: var(--text-secondary);
+        text-align: justify;
+      }
+
+      .quixote-closing {
+        border-left: 3px solid var(--accent-color);
+        padding: 0.5rem 0 0.5rem 1.5rem;
+        margin-top: 0.25rem;
+      }
+
+      .quixote-closing p {
+        font-size: 1.3rem;
+        font-style: italic;
+        color: var(--text-primary);
+      }
+
+      @media (max-width: 600px) {
+        .quixote-card {
+          padding: 1.5rem 1.35rem;
+        }
+        .quixote-prologue p,
+        .quixote-card p {
+          text-align: left;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Clube Dom Quixote</h1>
+    <div class="quixote-page">
+      <header>
+        <figure class="quixote-emblem">
+          <img
+            src="/quixote-logo.jpg"
+            alt="Logo do Clube Dom Quixote"
+            width="334"
+            height="450"
+            loading="eager"
+          />
+        </figure>
+        <h1>Clube Dom Quixote</h1>
+        <div class="divider"></div>
+      </header>
+
+      <main>
+        <section class="quixote-prologue" aria-label="Sobre o arquétipo de Dom Quixote">
+          <p>
+            Miguel de Cervantes nos legou mais do que um personagem; ele nos deu um
+            arquétipo. Dom Quixote, o "Cavaleiro da Triste Figura", tornou-se
+            cavaleiro andante por uma imersão profunda e apaixonada nos livros. A
+            literatura não foi para ele um mero passatempo, mas a forja de sua alma,
+            o combustível que o impeliu a sair de sua rotina para lutar por ideais,
+            defender os desamparados e buscar a beleza em um mundo que já não
+            acreditava nela.
+          </p>
+        </section>
+
+        <section class="quixote-manifesto" aria-label="Espírito do Clube">
+          <p>É com este exato espírito que nasce o Clube do Livro Dom Quixote.</p>
+        </section>
+
+        <section class="quixote-card" aria-label="Propósito e Jornada">
+          <p>
+            Nosso propósito é seguir os passos do nosso patrono: devorar bons livros
+            até que eles transbordem da página para a nossa vida. Não nos
+            contentaremos em ser leitores passivos. Seremos aventureiros. Cada obra
+            será uma nova jornada, cada capítulo um desafio a ser vencido e cada
+            discussão, uma nobre justa onde as ideias são nossas armas e o
+            entendimento, nosso troféu.
+          </p>
+          <p>
+            Aqui, buscaremos os clássicos imortais e as vozes contemporâneas que,
+            como os romances de cavalaria para Quixote, nos inspiram a sermos
+            melhores, a vermos o mundo com mais profundidade, empatia e coragem.
+            Juntos, formaremos uma irmandade de "quixotescos", prontos para defender
+            a importância da sabedoria contra o exército do lugar-comum e da
+            indiferença. As palavras podem moldar a realidade e um bom livro é o mais
+            fiel dos escudeiros.
+          </p>
+        </section>
+
+        <blockquote class="quixote-closing" aria-label="Convite">
+          <p>
+            Pegue seus livros, prepare sua coragem e venha cavalgar conosco pelas
+            planícies da imaginação. Pois, como o próprio cavaleiro nos ensinou, a
+            maior loucura é ver o mundo como ele é, e não como deveria ser.
+          </p>
+        </blockquote>
+      </main>
+    </div>
   </body>
 </html>
