@@ -4,8 +4,158 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grupo Fermata</title>
+    <!-- Importação de fontes clássicas do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #faf8f5;
+        --card-bg: #ffffff;
+        --text-primary: #1c1b18;
+        --text-secondary: #524e48;
+        --accent-color: #8c6d46;
+        --border-color: #e6dfd5;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        line-height: 1.75;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem 1.5rem;
+      }
+
+      .container {
+        max-width: 720px;
+        width: 100%;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 3.5rem;
+      }
+
+      .fermata-symbol {
+        font-size: 3.2rem;
+        color: var(--accent-color);
+        line-height: 1;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
+      }
+
+      .divider {
+        width: 60px;
+        height: 1px;
+        background-color: var(--accent-color);
+        margin: 1.5rem auto 0;
+        opacity: 0.6;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
+      .definition {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.35rem;
+        color: var(--text-secondary);
+        text-align: center;
+        padding: 0 1rem;
+      }
+
+      .definition em {
+        color: var(--text-primary);
+        font-style: italic;
+      }
+
+      .purpose-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 4px;
+        padding: 2.25rem 2.5rem;
+        box-shadow: 0 10px 30px rgba(28, 27, 24, 0.04);
+      }
+
+      .purpose-card h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--accent-color);
+        margin-bottom: 0.85rem;
+      }
+
+      .purpose-card p {
+        font-size: 1.05rem;
+        font-weight: 300;
+        color: var(--text-primary);
+      }
+
+      @media (max-width: 600px) {
+        .purpose-card {
+          padding: 1.75rem 1.5rem;
+        }
+        .definition {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Grupo Fermata</h1>
+    <div class="container">
+      <header>
+        <!-- Símbolo musical Unicode da Fermata -->
+        <span class="fermata-symbol" aria-hidden="true">&#119056;</span>
+        <h1>Grupo Fermata</h1>
+        <div class="divider"></div>
+      </header>
+
+      <main>
+        <section class="definition" aria-label="Definição de Fermata">
+          <p>
+            A <strong>fermata</strong> (italiano:
+            <em>“de fermare, ficar ou parar”</em>; também conhecido como espera,
+            pausa, suspensão) é um símbolo de notação musical colocado sobre uma
+            nota ou pausa, indicando que devemos sustentá-la à vontade, além da
+            sua duração normal e de acordo com a indicação do maestro.
+          </p>
+        </section>
+
+        <section class="purpose-card" aria-labelledby="titulo-proposito">
+          <h2 id="titulo-proposito">Propósito</h2>
+          <p>
+            Promover a busca e a apuração da beleza e da harmonia, gerar
+            convivência e sensibilizar quanto à mensagem que há nas composições
+            e obras-primas da chamada música clássica.
+          </p>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
