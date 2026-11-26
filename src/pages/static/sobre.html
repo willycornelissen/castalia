@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #faf8f5;
+        --card-bg: #ffffff;
+        --text-primary: #1c1b18;
+        --text-secondary: #48443d;
+        --accent-color: #8b6f3d;
+        --border-color: #e2dacb;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: "Cormorant Garamond", Georgia, serif;
+        line-height: 1.8;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .sobre-page {
+        max-width: 720px;
+        width: 100%;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .sobre-kicker {
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(2.4rem, 5vw, 3.3rem);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
+        line-height: 1.15;
+      }
+
+      .divider {
+        width: 64px;
+        height: 1px;
+        background-color: var(--accent-color);
+        margin: 1.15rem auto 1.75rem;
+        opacity: 0.7;
+      }
+
+      .sobre-artwork {
+        max-width: 340px;
+        margin: 0 auto;
+        padding: 8px;
+        background-color: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        box-shadow: 0 14px 36px rgba(28, 27, 24, 0.1);
+      }
+
+      .sobre-artwork img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 3px;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .sobre-myth p {
+        font-size: 1.32rem;
+        color: var(--text-primary);
+        text-align: justify;
+      }
+
+      .sobre-myth p::first-letter {
+        float: left;
+        font-size: 3.6rem;
+        line-height: 0.85;
+        font-weight: 700;
+        color: var(--accent-color);
+        padding-right: 0.55rem;
+        padding-top: 0.15rem;
+      }
+
+      .sobre-hesse-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 4px;
+        padding: 2rem 2.25rem;
+        box-shadow: 0 10px 30px rgba(28, 27, 24, 0.04);
+      }
+
+      .sobre-hesse-card p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        text-align: justify;
+      }
+
+      .sobre-welcome {
+        text-align: center;
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .sobre-welcome p {
+        font-size: 1.45rem;
+        font-style: italic;
+        font-weight: 600;
+        color: var(--accent-color);
+      }
+
+      @media (max-width: 600px) {
+        .sobre-hesse-card {
+          padding: 1.5rem 1.35rem;
+        }
+        .sobre-myth p,
+        .sobre-hesse-card p {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sobre-page">
+      <header>
+        <p class="sobre-kicker">Sobre</p>
+        <h1>Castália</h1>
+        <div class="divider"></div>
+        <figure class="sobre-artwork">
+          <img
+            src="/castalia-sobre.jpg"
+            alt="Castália junto à fonte sagrada aos pés do Monte Parnaso"
+            width="526"
+            height="526"
+            loading="eager"
+          />
+        </figure>
+      </header>
+
+      <main>
+        <section class="sobre-myth" aria-label="A Fonte de Castália">
+          <p>
+            Castália, uma náiade da mitologia grega, foi transformada por Apolo em
+            uma nascente sagrada aos pés do Monte Parnaso, próxima a Delfos. Suas
+            águas cristalinas, conhecidas como a Fonte de Castália, eram fonte de
+            inspiração poética, despertando o gênio criativo daqueles que as
+            bebiam ou escutavam seu suave murmúrio.
+          </p>
+        </section>
+
+        <section class="sobre-hesse-card" aria-label="Castália em Hermann Hesse">
+          <p>
+            Na modernidade, o escritor alemão Hermann Hesse transformou Castália no
+            seu livro <em>Magister Ludi</em> em uma sociedade utópica, um refúgio
+            de filósofos, artistas e cientistas. Nesse universo idealizado,
+            Castália é um santuário de conhecimento, sabedoria e beleza, onde seus
+            membros dedicam-se à busca da verdade e da perfeição por meio da
+            educação, da meditação e da criação artística.
+          </p>
+        </section>
+
+        <section class="sobre-welcome" aria-label="Boas-vindas">
+          <p>Bem-vindo(a) a Castália, a capital do imaginário.</p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

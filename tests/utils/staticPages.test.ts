@@ -3,6 +3,7 @@ import {
   parseStaticHtmlPage,
   loadQuickArchiveStaticPages,
   quickArchiveStaticPages,
+  sobreStaticPage,
 } from '@/utils/staticPages';
 
 describe('staticPages utilities', () => {
@@ -46,6 +47,16 @@ describe('staticPages utilities', () => {
           bodyHtml: page.bodyHtml,
         }))
     ).toEqual([]);
+  });
+
+  it('loads the standalone Sobre Castália page with artwork and editorial copy', () => {
+    expect(sobreStaticPage.path).toBe('/sobre');
+    expect(sobreStaticPage.title).toBe('Sobre');
+    expect(sobreStaticPage.bodyHtml).toContain('<h1>Castália</h1>');
+    expect(sobreStaticPage.bodyHtml).toContain('src="/castalia-sobre.jpg"');
+    expect(sobreStaticPage.bodyHtml).toContain('Fonte de Castália');
+    expect(sobreStaticPage.bodyHtml).toContain('Hermann Hesse');
+    expect(sobreStaticPage.bodyHtml).toContain('Bem-vindo(a) a Castália, a capital do imaginário.');
   });
 
   it('sanitizes dangerous tags, event handlers, and unsafe URLs from HTML pages', () => {

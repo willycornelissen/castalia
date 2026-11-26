@@ -217,6 +217,34 @@ const rawStaticHtmlModules = import.meta.glob('../pages/static/*.html', {
 }) as Record<string, string>;
 
 /**
+ * Resolves and sanitizes a static HTML page by slug from `src/pages/static/<slug>.html`.
+ */
+export function loadStaticHtmlPage(
+  slug: string,
+  label: string,
+  modules: Record<string, string> = rawStaticHtmlModules
+): StaticHtmlPage {
+  const moduleEntry = Object.entries(modules).find(([filePath]) =>
+    filePath.endsWith(`/${slug}.html`)
+  );
+  const { title, bodyHtml } = moduleEntry
+    ? parseStaticHtmlPage(moduleEntry[1], label)
+    : (() => {
+        const fallbackEl = document.createElement('h1');
+        fallbackEl.textContent = label;
+        return { title: label, bodyHtml: fallbackEl.outerHTML };
+      })();
+
+  return {
+    slug,
+    path: `/${slug}`,
+    label,
+    title,
+    bodyHtml,
+  };
+}
+
+/**
  * Resolves editable static HTML pages corresponding to internal `quickArchive` links.
  * External links (such as Nova Acrópole) are intentionally excluded.
  */
@@ -237,27 +265,11 @@ export function loadQuickArchiveStaticPages(
       continue;
     }
 
-    const moduleEntry = Object.entries(modules).find(([filePath]) =>
-      filePath.endsWith(`/${slug}.html`)
-    );
-    const { title, bodyHtml } = moduleEntry
-      ? parseStaticHtmlPage(moduleEntry[1], item.label)
-      : (() => {
-          const fallbackEl = document.createElement('h1');
-          fallbackEl.textContent = item.label;
-          return { title: item.label, bodyHtml: fallbackEl.outerHTML };
-        })();
-
-    pages.push({
-      slug,
-      path: `/${slug}`,
-      label: item.label,
-      title,
-      bodyHtml,
-    });
+    pages.push(loadStaticHtmlPage(slug, item.label, modules));
   }
 
   return pages;
 }
 
 export const quickArchiveStaticPages = loadQuickArchiveStaticPages();
+export const sobreStaticPage = loadStaticHtmlPage('sobre', 'Sobre');

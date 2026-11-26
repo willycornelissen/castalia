@@ -74,6 +74,7 @@ describe('App routing shell', () => {
   });
 
   it.each([
+    { path: '/sobre', title: 'Castália' },
     { path: '/grupo-fermata', title: 'Grupo Fermata' },
     { path: '/clube-dom-quixote', title: 'Clube Dom Quixote' },
     { path: '/dablio-labs', title: 'Dáblio Labs' },
