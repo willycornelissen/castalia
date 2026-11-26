@@ -421,6 +421,39 @@
   border-radius: 4px;
 }
 
+.newspaper-prose .dablio-link-wrap {
+  margin-top: 0.9rem;
+  margin-bottom: 0;
+}
+
+.newspaper-prose a.dablio-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.35rem;
+  border-radius: 9999px;
+  border: 1px solid #d5cef0;
+  background-color: #f6f4fc;
+  color: #574691;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.newspaper-prose a.dablio-link:hover {
+  background-color: #574691;
+  border-color: #574691;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 600px) {
   .newspaper-prose .dablio-card {
     padding: 1.65rem 1.35rem;

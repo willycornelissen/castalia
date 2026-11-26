@@ -33,6 +33,10 @@ describe('staticPages utilities', () => {
     expect(dablioLabs?.bodyHtml).toContain('Willy Garabini Cornelissen');
     expect(dablioLabs?.bodyHtml).toContain('Dablio Labs.');
     expect(dablioLabs?.bodyHtml).toContain('Spec Driven Development (SDD)');
+    expect(dablioLabs?.bodyHtml).toContain('href="https://willy.dev.br"');
+    expect(dablioLabs?.bodyHtml).toContain('target="_blank"');
+    expect(dablioLabs?.bodyHtml).toContain('rel="noopener noreferrer"');
+    expect(dablioLabs?.bodyHtml).toContain('willy.dev.br');
 
     expect(
       quickArchiveStaticPages

@@ -134,6 +134,37 @@
         border-radius: 4px;
       }
 
+      .dablio-link-wrap {
+        margin-top: 1rem;
+      }
+
+      .dablio-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 1.35rem;
+        border-radius: 9999px;
+        border: 1px solid #d5cef0;
+        background-color: #f6f4fc;
+        color: var(--accent-color);
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .dablio-link:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
       @media (max-width: 600px) {
         .dablio-card {
           padding: 1.75rem 1.35rem;
@@ -164,6 +195,17 @@
           <p class="dablio-tagline">
             Having fun with
             <span class="dablio-sdd">Spec Driven Development (SDD)</span>.
+          </p>
+          <p class="dablio-link-wrap">
+            <a
+              class="dablio-link"
+              href="https://willy.dev.br"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>willy.dev.br</span>
+              <span aria-hidden="true">↗</span>
+            </a>
           </p>
         </section>
       </main>
