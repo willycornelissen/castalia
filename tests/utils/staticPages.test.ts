@@ -14,13 +14,20 @@ describe('staticPages utilities', () => {
       '/dablio-labs',
     ]);
 
+    const grupoFermata = quickArchiveStaticPages.find((page) => page.slug === 'grupo-fermata');
+    expect(grupoFermata?.title).toBe('Grupo Fermata');
+    expect(grupoFermata?.bodyHtml).toContain('<h1>Grupo Fermata</h1>');
+    expect(grupoFermata?.bodyHtml).toContain('src="/fermata-logo.png"');
+    expect(grupoFermata?.bodyHtml).toContain('Propósito');
+
     expect(
-      quickArchiveStaticPages.map((page) => ({
-        title: page.title,
-        bodyHtml: page.bodyHtml,
-      }))
+      quickArchiveStaticPages
+        .filter((page) => page.slug !== 'grupo-fermata')
+        .map((page) => ({
+          title: page.title,
+          bodyHtml: page.bodyHtml,
+        }))
     ).toEqual([
-      { title: 'Grupo Fermata', bodyHtml: '<h1>Grupo Fermata</h1>' },
       { title: 'Clube Dom Quixote', bodyHtml: '<h1>Clube Dom Quixote</h1>' },
       { title: 'Clube Athena', bodyHtml: '<h1>Clube Athena</h1>' },
       { title: 'Dáblio Labs', bodyHtml: '<h1>Dáblio Labs</h1>' },

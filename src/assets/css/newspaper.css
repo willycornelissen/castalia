@@ -104,6 +104,96 @@
   border: 1px solid rgba(34, 34, 34, 0.12);
 }
 
+/* Grupo Fermata Static Page */
+.newspaper-prose .fermata-page {
+  padding: 0.5rem 0 1rem;
+}
+
+.newspaper-prose .fermata-page header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.newspaper-prose .fermata-emblem {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 1.15rem;
+}
+
+.newspaper-prose .fermata-emblem img {
+  display: block;
+  width: 180px;
+  max-width: 55%;
+  height: auto;
+  margin: 0;
+  border: none;
+  mix-blend-mode: multiply;
+}
+
+.newspaper-prose .fermata-page h1 {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  letter-spacing: 0.03em;
+}
+
+.newspaper-prose .fermata-page .divider {
+  width: 60px;
+  height: 1px;
+  background-color: #8c6d46;
+  margin: 1.25rem auto 0;
+  opacity: 0.65;
+}
+
+.newspaper-prose .fermata-page main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.newspaper-prose .fermata-page .definition {
+  text-align: center;
+  padding: 0 0.75rem;
+}
+
+.newspaper-prose .fermata-page .definition p {
+  font-size: 1.3rem;
+  line-height: 1.75;
+  color: #524e48;
+  margin-bottom: 0;
+}
+
+.newspaper-prose .fermata-page .definition em {
+  color: #222222;
+}
+
+.newspaper-prose .fermata-page .purpose-card {
+  background-color: #ffffff;
+  border: 1px solid #e6dfd5;
+  border-left: 4px solid #8c6d46;
+  border-radius: 4px;
+  padding: 2rem 2.25rem;
+  box-shadow: 0 10px 30px rgba(28, 27, 24, 0.04);
+}
+
+.newspaper-prose .fermata-page .purpose-card h2 {
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #8c6d46;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.newspaper-prose .fermata-page .purpose-card p {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  margin-bottom: 0;
+  color: #222222;
+}
+
 /* Announcement Ticker Animation */
 @keyframes ticker-scroll {
   0% {
