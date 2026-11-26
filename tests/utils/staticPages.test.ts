@@ -7,12 +7,24 @@ import {
 } from '@/utils/staticPages';
 
 describe('staticPages utilities', () => {
-  it('loads all internal quickArchive HTML pages while excluding Nova Acrópole', () => {
+  it('loads all internal quickArchive HTML pages', () => {
     expect(quickArchiveStaticPages.map((page) => page.path)).toEqual([
+      '/nova-acropole',
       '/grupo-fermata',
       '/clube-dom-quixote',
       '/dablio-labs',
     ]);
+
+    const novaAcropole = quickArchiveStaticPages.find((page) => page.slug === 'nova-acropole');
+    expect(novaAcropole?.title).toBe('Nova Acrópole');
+    expect(novaAcropole?.bodyHtml).toContain('<h1>Nova Acrópole</h1>');
+    expect(novaAcropole?.bodyHtml).toContain('src="/na-logo.png"');
+    expect(novaAcropole?.bodyHtml).toContain(
+      'Uma escola de filosofia que promove a cultura e pratica o'
+    );
+    expect(novaAcropole?.bodyHtml).toContain('href="https://www.acropolis.org"');
+    expect(novaAcropole?.bodyHtml).toContain('target="_blank"');
+    expect(novaAcropole?.bodyHtml).toContain('rel="noopener noreferrer"');
 
     const grupoFermata = quickArchiveStaticPages.find((page) => page.slug === 'grupo-fermata');
     expect(grupoFermata?.title).toBe('Grupo Fermata');
@@ -42,9 +54,9 @@ describe('staticPages utilities', () => {
       quickArchiveStaticPages
         .filter(
           (page) =>
-            page.slug !== 'grupo-fermata' &&
-            page.slug !== 'clube-dom-quixote' &&
-            page.slug !== 'dablio-labs'
+            !['nova-acropole', 'grupo-fermata', 'clube-dom-quixote', 'dablio-labs'].includes(
+              page.slug
+            )
         )
         .map((page) => ({
           title: page.title,

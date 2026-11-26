@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova Acrópole</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #faf8f5;
+        --card-bg: #ffffff;
+        --text-primary: #1c1b18;
+        --text-secondary: #3b4644;
+        --accent-color: #086357;
+        --accent-soft: #eef6f4;
+        --border-color: #d6e2df;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        line-height: 1.75;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2.5rem 1.5rem;
+      }
+
+      .na-page {
+        max-width: 680px;
+        width: 100%;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .na-emblem {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 1.35rem;
+      }
+
+      .na-emblem img {
+        display: block;
+        width: 220px;
+        max-width: 72%;
+        height: auto;
+      }
+
+      h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(2.25rem, 4.5vw, 3.1rem);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
+      }
+
+      .divider {
+        width: 64px;
+        height: 2px;
+        background-color: var(--accent-color);
+        margin: 1.15rem auto 0;
+        opacity: 0.75;
+      }
+
+      .na-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 6px;
+        padding: 2.25rem 2.5rem;
+        box-shadow: 0 12px 32px rgba(8, 99, 87, 0.06);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.35rem;
+      }
+
+      .na-statement {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 1.5rem;
+        line-height: 1.65;
+        color: var(--text-primary);
+      }
+
+      .na-link-wrap {
+        margin-top: 0.15rem;
+      }
+
+      .na-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.55rem 1.45rem;
+        border-radius: 9999px;
+        border: 1px solid #b9d4ce;
+        background-color: var(--accent-soft);
+        color: var(--accent-color);
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .na-link:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      @media (max-width: 600px) {
+        .na-card {
+          padding: 1.75rem 1.35rem;
+        }
+        .na-statement {
+          font-size: 1.32rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="na-page">
+      <header>
+        <figure class="na-emblem">
+          <img
+            src="/na-logo.png"
+            alt="Logo da Nova Acrópole"
+            width="300"
+            height="116"
+            loading="eager"
+          />
+        </figure>
+        <h1>Nova Acrópole</h1>
+        <div class="divider"></div>
+      </header>
+
+      <main>
+        <section class="na-card" aria-label="Sobre a Nova Acrópole">
+          <p class="na-statement">
+            Uma escola de filosofia que promove a cultura e pratica o
+            voluntariado
+          </p>
+          <p class="na-link-wrap">
+            <a
+              class="na-link"
+              href="https://www.acropolis.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>acropolis.org</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

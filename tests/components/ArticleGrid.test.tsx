@@ -60,12 +60,8 @@ describe('ArticleGrid', () => {
       </MemoryRouter>
     );
 
-    const novaAcropoleLink = screen.getByRole('link', { name: /nova acrópole/i });
-    expect(novaAcropoleLink).toHaveAttribute('href', 'http://www.acropolis.org');
-    expect(novaAcropoleLink).toHaveAttribute('target', '_blank');
-    expect(novaAcropoleLink).toHaveAttribute('rel', 'noopener noreferrer');
-
     const expectedLinks = [
+      { label: 'Nova Acrópole', href: '/nova-acropole' },
       { label: 'Grupo Fermata', href: '/grupo-fermata' },
       { label: 'Clube Dom Quixote', href: '/clube-dom-quixote' },
       { label: 'Dáblio Labs', href: '/dablio-labs' },

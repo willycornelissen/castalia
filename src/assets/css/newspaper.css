@@ -581,6 +581,111 @@
   }
 }
 
+/* Nova Acrópole Static Page */
+.newspaper-prose .na-page {
+  padding: 0.5rem 0 1.25rem;
+}
+
+.newspaper-prose .na-page header {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.newspaper-prose .na-emblem {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.newspaper-prose .na-emblem img {
+  display: block;
+  width: 220px;
+  max-width: 72%;
+  height: auto;
+  margin: 0;
+  border: none;
+}
+
+.newspaper-prose .na-page h1 {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  letter-spacing: 0.04em;
+}
+
+.newspaper-prose .na-page .divider {
+  width: 64px;
+  height: 2px;
+  background-color: #086357;
+  margin: 1.1rem auto 0;
+  opacity: 0.75;
+}
+
+.newspaper-prose .na-card {
+  background-color: #ffffff;
+  border: 1px solid #d6e2df;
+  border-left: 4px solid #086357;
+  border-radius: 6px;
+  padding: 2.15rem 2.25rem;
+  box-shadow: 0 12px 32px rgba(8, 99, 87, 0.06);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.newspaper-prose .na-statement {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.45rem;
+  line-height: 1.65;
+  color: #222222;
+  margin-bottom: 0;
+}
+
+.newspaper-prose .na-link-wrap {
+  margin-top: 0.15rem;
+  margin-bottom: 0;
+}
+
+.newspaper-prose a.na-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.52rem 1.4rem;
+  border-radius: 9999px;
+  border: 1px solid #b9d4ce;
+  background-color: #eef6f4;
+  color: #086357;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.newspaper-prose a.na-link:hover {
+  background-color: #086357;
+  border-color: #086357;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .newspaper-prose .na-card {
+    padding: 1.65rem 1.35rem;
+  }
+
+  .newspaper-prose .na-statement {
+    font-size: 1.3rem;
+  }
+}
+
 /* Announcement Ticker Animation */
 @keyframes ticker-scroll {
   0% {

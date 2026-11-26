@@ -246,7 +246,7 @@ export function loadStaticHtmlPage(
 
 /**
  * Resolves editable static HTML pages corresponding to internal `quickArchive` links.
- * External links (such as Nova Acrópole) are intentionally excluded.
+ * External links (http/https URLs) are intentionally excluded.
  */
 export function loadQuickArchiveStaticPages(
   items: NavItem[] = siteConfig.quickArchive,

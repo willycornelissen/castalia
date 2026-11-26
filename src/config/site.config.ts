@@ -20,7 +20,7 @@ export const siteConfig: SiteConfig = {
     { label: 'Ensaios', path: '/tag/ensaios' },
   ],
   quickArchive: [
-    { label: 'Nova Acrópole', path: 'http://www.acropolis.org' },
+    { label: 'Nova Acrópole', path: '/nova-acropole' },
     { label: 'Grupo Fermata', path: '/grupo-fermata' },
     { label: 'Clube Dom Quixote', path: '/clube-dom-quixote' },
     { label: 'Dáblio Labs', path: '/dablio-labs' },
