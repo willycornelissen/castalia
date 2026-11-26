@@ -23,7 +23,6 @@ export const siteConfig: SiteConfig = {
     { label: 'Nova Acrópole', path: 'http://www.acropolis.org' },
     { label: 'Grupo Fermata', path: '/grupo-fermata' },
     { label: 'Clube Dom Quixote', path: '/clube-dom-quixote' },
-    { label: 'Clube Athena', path: '/clube-athena' },
     { label: 'Dáblio Labs', path: '/dablio-labs' },
   ],
 };

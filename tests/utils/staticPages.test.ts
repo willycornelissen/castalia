@@ -10,7 +10,6 @@ describe('staticPages utilities', () => {
     expect(quickArchiveStaticPages.map((page) => page.path)).toEqual([
       '/grupo-fermata',
       '/clube-dom-quixote',
-      '/clube-athena',
       '/dablio-labs',
     ]);
 
@@ -26,17 +25,27 @@ describe('staticPages utilities', () => {
     expect(clubeDomQuixote?.bodyHtml).toContain('src="/quixote-logo.jpg"');
     expect(clubeDomQuixote?.bodyHtml).toContain('Miguel de Cervantes nos legou mais do que um personagem');
 
+    const dablioLabs = quickArchiveStaticPages.find((page) => page.slug === 'dablio-labs');
+    expect(dablioLabs?.title).toBe('Dáblio Labs');
+    expect(dablioLabs?.bodyHtml).toContain('<h1>Dáblio Labs</h1>');
+    expect(dablioLabs?.bodyHtml).toContain('src="/dablio-logo.webp"');
+    expect(dablioLabs?.bodyHtml).toContain('Willy Garabini Cornelissen');
+    expect(dablioLabs?.bodyHtml).toContain('Dablio Labs.');
+    expect(dablioLabs?.bodyHtml).toContain('Spec Driven Development (SDD)');
+
     expect(
       quickArchiveStaticPages
-        .filter((page) => page.slug !== 'grupo-fermata' && page.slug !== 'clube-dom-quixote')
+        .filter(
+          (page) =>
+            page.slug !== 'grupo-fermata' &&
+            page.slug !== 'clube-dom-quixote' &&
+            page.slug !== 'dablio-labs'
+        )
         .map((page) => ({
           title: page.title,
           bodyHtml: page.bodyHtml,
         }))
-    ).toEqual([
-      { title: 'Clube Athena', bodyHtml: '<h1>Clube Athena</h1>' },
-      { title: 'Dáblio Labs', bodyHtml: '<h1>Dáblio Labs</h1>' },
-    ]);
+    ).toEqual([]);
   });
 
   it('sanitizes dangerous tags, event handlers, and unsafe URLs from HTML pages', () => {

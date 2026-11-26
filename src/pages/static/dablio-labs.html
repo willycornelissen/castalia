@@ -4,8 +4,169 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dáblio Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #faf8f5;
+        --card-bg: #ffffff;
+        --text-primary: #1c1b18;
+        --text-secondary: #4e4a59;
+        --accent-color: #574691;
+        --accent-soft: #f2effa;
+        --border-color: #e2def0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        line-height: 1.7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2.5rem 1.5rem;
+      }
+
+      .dablio-page {
+        max-width: 680px;
+        width: 100%;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .dablio-emblem {
+        width: 168px;
+        height: 168px;
+        margin: 0 auto 1.35rem;
+        padding: 10px;
+        border-radius: 9999px;
+        background-color: #ffffff;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 12px 28px rgba(87, 70, 145, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .dablio-emblem img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(2.25rem, 4.5vw, 3.1rem);
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        color: var(--text-primary);
+      }
+
+      .divider {
+        width: 60px;
+        height: 2px;
+        background-color: var(--accent-color);
+        margin: 1.15rem auto 0;
+        opacity: 0.75;
+      }
+
+      .dablio-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 6px;
+        padding: 2.25rem 2.5rem;
+        box-shadow: 0 12px 32px rgba(28, 27, 24, 0.05);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      .dablio-author {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.25;
+      }
+
+      .dablio-studio {
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--accent-color);
+      }
+
+      .dablio-tagline {
+        margin-top: 0.75rem;
+        padding-top: 1.15rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+      }
+
+      .dablio-sdd {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.95em;
+        font-weight: 500;
+        color: var(--accent-color);
+        background-color: var(--accent-soft);
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+      }
+
+      @media (max-width: 600px) {
+        .dablio-card {
+          padding: 1.75rem 1.35rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Dáblio Labs</h1>
+    <div class="dablio-page">
+      <header>
+        <figure class="dablio-emblem">
+          <img
+            src="/dablio-logo.webp"
+            alt="Logo da Dáblio Labs"
+            width="288"
+            height="288"
+            loading="eager"
+          />
+        </figure>
+        <h1>Dáblio Labs</h1>
+        <div class="divider"></div>
+      </header>
+
+      <main>
+        <section class="dablio-card" aria-label="Sobre a Dáblio Labs">
+          <p class="dablio-author">Willy Garabini Cornelissen</p>
+          <p class="dablio-studio">Dablio Labs.</p>
+          <p class="dablio-tagline">
+            Having fun with
+            <span class="dablio-sdd">Spec Driven Development (SDD)</span>.
+          </p>
+        </section>
+      </main>
+    </div>
   </body>
 </html>

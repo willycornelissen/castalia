@@ -68,7 +68,6 @@ describe('ArticleGrid', () => {
     const expectedLinks = [
       { label: 'Grupo Fermata', href: '/grupo-fermata' },
       { label: 'Clube Dom Quixote', href: '/clube-dom-quixote' },
-      { label: 'Clube Athena', href: '/clube-athena' },
       { label: 'Dáblio Labs', href: '/dablio-labs' },
     ];
 
