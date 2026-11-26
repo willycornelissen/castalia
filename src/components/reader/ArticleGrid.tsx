@@ -94,17 +94,10 @@ export function ArticleGrid({
               {siteConfig.quickArchive.map((item) => {
                 const isExternal = isExternalNavUrl(item.path);
                 const isActive = !isExternal && location.pathname === item.path;
-                const className = `font-condensed text-sm uppercase tracking-wider font-bold text-ink hover:underline flex items-center justify-between py-0.5${
-                  isActive ? ' underline' : ''
+                const className = `font-condensed text-sm uppercase tracking-wider font-bold text-ink no-underline hover:opacity-65 transition-opacity block py-0.5${
+                  isActive ? ' opacity-65' : ''
                 }`;
-                const content = (
-                  <>
-                    <span>{item.label}</span>
-                    <span aria-hidden="true" className="text-muted text-xs">
-                      →
-                    </span>
-                  </>
-                );
+                const content = item.label;
 
                 return (
                   <li key={item.path}>

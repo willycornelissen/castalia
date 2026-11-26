@@ -75,6 +75,8 @@ describe('ArticleGrid', () => {
       const link = screen.getByRole('link', { name: item.label });
       expect(link).toHaveAttribute('href', item.href);
       expect(link).not.toHaveAttribute('target');
+      expect(link).not.toHaveClass('underline');
+      expect(link.textContent).not.toContain('→');
     }
 
     expect(screen.queryByText(/arquivo rápido/i)).not.toBeInTheDocument();
@@ -159,10 +161,10 @@ describe('ArticleGrid', () => {
     expect(within(leftColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(leftColumn).getByText('Matéria Número 4')).toBeInTheDocument();
     expect(within(rightColumn).getByText('Matéria Número 5')).toBeInTheDocument();
-    expect(within(rightColumn).getByRole('link', { name: 'Grupo Fermata' })).toHaveAttribute(
-      'aria-current',
-      'page'
-    );
+    const activeLink = within(rightColumn).getByRole('link', { name: 'Grupo Fermata' });
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+    expect(activeLink).not.toHaveClass('underline');
+    expect(activeLink).not.toHaveClass('hover:underline');
     expect(screen.queryByRole('button', { name: /carregar mais/i })).not.toBeInTheDocument();
   });
 });
