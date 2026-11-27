@@ -19,7 +19,7 @@ const mockPost: Post = {
 };
 
 describe('ArticleCard', () => {
-  it('renders big lead story variant with image, excerpt, and tags', () => {
+  it('renders big lead story variant with image, excerpt, body, and tags', () => {
     render(
       <MemoryRouter>
         <ArticleCard post={mockPost} variant="big" />
@@ -28,6 +28,7 @@ describe('ArticleCard', () => {
 
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
     expect(screen.getByText(mockPost.excerpt)).toBeInTheDocument();
+    expect(screen.getByText(mockPost.content_markdown)).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', mockPost.feature_image);
     expect(screen.getByText(/4 min/i)).toBeInTheDocument();
   });
@@ -42,6 +43,7 @@ describe('ArticleCard', () => {
     const img = screen.getByRole('img');
     expect(img).toHaveAttribute('loading', 'lazy');
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
+    expect(screen.queryByText(mockPost.content_markdown)).not.toBeInTheDocument();
   });
 
   it('renders compact small variant without requiring feature image', () => {
@@ -53,6 +55,7 @@ describe('ArticleCard', () => {
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
     expect(screen.getByText(mockPost.title)).toBeInTheDocument();
+    expect(screen.queryByText(mockPost.content_markdown)).not.toBeInTheDocument();
   });
 
   it('renders all tags when a post belongs to many tags/sections', () => {

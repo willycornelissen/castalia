@@ -8,7 +8,7 @@ import type { StaticHtmlPage } from '@/utils/staticPages';
 const makePost = (i: number): Post => ({
   slug: `post-${i}`,
   title: `Matéria Número ${i}`,
-  content_markdown: 'Conteúdo',
+  content_markdown: `Corpo completo da matéria ${i}`,
   excerpt: `Resumo da matéria ${i}`,
   feature_image: i === 1 ? 'https://cdn.test/1.webp' : '',
   status: 'published',
@@ -93,11 +93,13 @@ describe('ArticleGrid', () => {
     const rightColumn = screen.getByTestId('right-column');
 
     expect(within(centerColumn).getByText('Matéria Número 1')).toBeInTheDocument();
+    expect(within(centerColumn).getByText('Corpo completo da matéria 1')).toBeInTheDocument();
     expect(within(centerColumn).queryByText('Matéria Número 2')).not.toBeInTheDocument();
     expect(within(centerColumn).getByText('Matéria Número 8')).toBeInTheDocument();
     expect(within(centerColumn).getByText('Matéria Número 9')).toBeInTheDocument();
 
     expect(within(leftColumn).getByText('Matéria Número 2')).toBeInTheDocument();
+    expect(within(leftColumn).queryByText('Corpo completo da matéria 2')).not.toBeInTheDocument();
     expect(within(leftColumn).getByText('Matéria Número 3')).toBeInTheDocument();
     expect(within(leftColumn).getByText('Matéria Número 4')).toBeInTheDocument();
     expect(within(leftColumn).queryByText('Matéria Número 5')).not.toBeInTheDocument();

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Post } from '@/types/post';
 import { formatDate } from '@/utils/formatDate';
 import { MediaImage } from '@/components/common/MediaImage';
+import { PostContent } from './PostContent';
 import { TagBadge } from './TagBadge';
 
 export type ArticleCardVariant = 'big' | 'horizontal' | 'small';
@@ -45,6 +46,11 @@ export function ArticleCard({ post, variant = 'horizontal' }: ArticleCardProps) 
             </p>
           )}
         </Link>
+        {post.content_markdown && (
+          <div className="mt-5">
+            <PostContent markdown={post.content_markdown} />
+          </div>
+        )}
       </article>
     );
   }
